@@ -20,5 +20,9 @@
         android:id="@+id/textView"
         android:layout_margin="8dp"
         android:textColor="@android:color/white"/>
+<<<<<<< HEAD
 </ScrollView>
 </LinearLayout>
+=======
+</ScrollView>
+>>>>>>> 087b162883b3d1553ed39a833ba6a42a4b1cb429
