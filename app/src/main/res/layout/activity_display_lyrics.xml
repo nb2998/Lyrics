@@ -15,5 +15,4 @@
         android:id="@+id/textView"
         android:layout_margin="8dp"
         android:textColor="@android:color/white"/>
-
 </ScrollView>

@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.os.IBinder;
+import android.widget.Toast;
 
 public class MyService extends Service {
 
@@ -21,10 +22,19 @@ public class MyService extends Service {
 
         audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
         musicReceiver = new MusicReceiver();
+
 //
-        if (isNetworkAvailable(getBaseContext())) {
-//            NotificationCompat notificationCompat=new NotificationCompat.Action.Builder(android.R.drawable.checkbox_on_background)
-        }
+//        if (isNetworkAvailable(getBaseContext())) {
+//            Notification notification= new NotificationCompat.Builder(getBaseContext())
+//                    .setContentTitle("Click on the notification to know the lyrics")
+//                    .setSmallIcon(R.mipmap.ic_launcher)
+//                    .setContentText("")
+//                    .setContentIntent(PendingIntent.getActivity(getBaseContext(),123,
+//                            new Intent(getBaseContext(),DisplayLyricsActivity.class),PendingIntent.FLAG_UPDATE_CURRENT))
+//                    .build();
+//
+//            ((NotificationManager)(getSystemService(NOTIFICATION_SERVICE))).notify(1,notification);
+//        }
 
 //        Thread thread=new Thread(new Runnable() {
 //            @Override
@@ -101,8 +111,11 @@ public class MyService extends Service {
 //        // MyTouch4G
 //        iF.addAction("com.real.IMP.metachanged");
 
-
-        registerReceiver(musicReceiver, iF);
+        if(isNetworkAvailable(getBaseContext())) {
+            registerReceiver(musicReceiver, iF);
+        } else{
+            Toast.makeText(getBaseContext(),"Sorry, check your Internet connection and restart the app!", Toast.LENGTH_LONG).show();
+        }
 //            }
 //        });
 

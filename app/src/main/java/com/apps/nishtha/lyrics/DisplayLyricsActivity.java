@@ -1,9 +1,8 @@
 package com.apps.nishtha.lyrics;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 public class DisplayLyricsActivity extends AppCompatActivity {
@@ -18,7 +17,7 @@ public class DisplayLyricsActivity extends AppCompatActivity {
 
         Intent i=getIntent();
         String lyrics=i.getStringExtra("lyrics");
-        Log.d("TAG", "onCreate: "+lyrics);
+        setTitle(i.getStringExtra("songName"));
         textView.setText(lyrics);
 
     }
