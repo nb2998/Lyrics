@@ -1,6 +1,7 @@
 package com.apps.nishtha.lyrics;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -37,11 +38,17 @@ public class MainActivity extends AppCompatActivity {
     String trackId;
     ArrayList<String> trackIdArrayList = new ArrayList<>();
 
+    boolean switchIsChecked;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        okHttpClient = new OkHttpClient();
         nameEt = (EditText) findViewById(R.id.nameEt);
         btnSearch = (Button) findViewById(R.id.btnSearch);
         recView = (RecyclerView) findViewById(R.id.recView);
@@ -53,21 +60,6 @@ public class MainActivity extends AppCompatActivity {
         Intent serviceIntent = new Intent(MainActivity.this, MyService.class);
         startService(serviceIntent);
 
-//        switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                if(isChecked){
-//                    Intent serviceIntent=new Intent(MainActivity.this,MyService.class);
-//                    startService(serviceIntent);
-//                }
-//                else{
-//                    Toast.makeText(MainActivity.this,"Sorry! Enable the services to know the lyrics", Toast.LENGTH_LONG).show();
-//                }
-//            }
-//        });
-
-
-        okHttpClient = new OkHttpClient();
 
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,6 +68,40 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+//    @Override
+//    protected void onResume() {
+        // TODO: 24/7/17 Not working : Trying to give a provision to enable/disable the sevices 
+//        sharedPreferences=getPreferences(MODE_PRIVATE);
+//        editor = sharedPreferences.edit();
+//
+//        if(sharedPreferences.getBoolean("switchIsChecked",true)){
+//            switchCompat.setChecked(true);
+//            Intent serviceIntent=new Intent(MainActivity.this,MyService.class);
+//            startService(serviceIntent);
+//        } else {
+//            switchCompat.setChecked(false);
+//            Toast.makeText(MainActivity.this,"Sorry! Enable the services to know the lyrics", Toast.LENGTH_LONG).show();
+//        }
+//
+//        switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                if(switchCompat.isChecked()){
+//                    editor.putBoolean("switchIsChecked", true);
+//                    editor.apply();
+////                    Intent serviceIntent=new Intent(MainActivity.this,MyService.class);
+////                    startService(serviceIntent);
+//                }
+//                else{
+//                    editor.putBoolean("switchIsChecked", false);
+//                    editor.apply();
+////                    Toast.makeText(MainActivity.this,"Sorry! Enable the services to know the lyrics", Toast.LENGTH_LONG).show();
+//                }
+//            }
+//        });
+//        super.onResume();
+//    }
 
     public void getId() {
         String search = baseUrl + nameEt.getText().toString();

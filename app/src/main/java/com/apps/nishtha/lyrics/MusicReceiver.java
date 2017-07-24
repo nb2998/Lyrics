@@ -89,6 +89,11 @@ public class MusicReceiver extends BroadcastReceiver {
                     artistName.append(artist.charAt(i));
                 }
             }
+//            if(artistName.length()>=3){
+//                if(artist.substring(0,3).equals("www")){
+//                    artistName.replace(0,artistName.length(),"");
+//                }
+//            }
         }
 
         getTrackId(trackName.toString(), artistName.toString());
@@ -196,12 +201,15 @@ public class MusicReceiver extends BroadcastReceiver {
                 }
             });
         } else {
-            Intent displayIntent = new Intent(c, DisplayLyricsActivity.class);
-            displayIntent.putExtra("lyrics", "Sorry! The song is pirated or the name of the song saved is not apt!");
-            displayIntent.putExtra("songName","Unavailable");
-            displayIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-            c.startActivity(displayIntent);
+            Notification notification = new NotificationCompat.Builder(c)
+                    .setContentTitle("Lyrics unavailable")
+                    .setContentText("Sorry! The song seems to be pirated")
+                    .setSmallIcon(R.drawable.tune)
+                    .setAutoCancel(true)
+                    .build();
+
+            ((NotificationManager) (c.getSystemService(NOTIFICATION_SERVICE))).notify(1, notification);
         }
     }
 
