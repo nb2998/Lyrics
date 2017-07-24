@@ -198,7 +198,8 @@ public class MusicReceiver extends BroadcastReceiver {
                         Intent displayIntent = new Intent(c, DisplayLyricsActivity.class);
                         displayIntent.putExtra("lyrics", lyrics);
                         displayIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
+                        displayIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        displayIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                         c.startActivity(displayIntent);
                     }
                 }
@@ -264,7 +265,7 @@ public class MusicReceiver extends BroadcastReceiver {
         });
     }
 
-    public void getLyrics2() {
+    /*public void getLyrics2() {
         Log.d(TAG, "getLyrics: " + trackIdArrayList.get(0));
         Request request1 = new Request.Builder()
                 .url("https://api.musixmatch.com/ws/1.1/track.lyrics.get?apikey=0e3945b8ba5f77f377843ec4b2539360&track_id=" + trackIdArrayList.get(0))
@@ -289,7 +290,7 @@ public class MusicReceiver extends BroadcastReceiver {
             }
         });
 
-    }
+    }*/
 }
 // https://api.musixmatch.com/ws/1.1/track.lyrics.get?apikey=0e3945b8ba5f77f377843ec4b2539360&track_id=113673904
 // http://api.musixmatch.com/ws/1.1/track.search?apikey=0e3945b8ba5f77f377843ec4b2539360&q_track=Perfect&q_artist=Ed
