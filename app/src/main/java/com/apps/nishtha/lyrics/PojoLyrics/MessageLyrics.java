@@ -1,11 +1,11 @@
-package com.apps.nishtha.lyrics;
+package com.apps.nishtha.lyrics.PojoLyrics;
 
 /**
  * Created by nishtha on 21/7/17.
  */
 
-class MessageLyrics {
-    BodyLyrics body;
+public class MessageLyrics {
+    private BodyLyrics body;
 
     public BodyLyrics getBodyLyrics() {
         return body;

@@ -8,50 +8,92 @@
     tools:context="com.apps.nishtha.lyrics.MainActivity">
 
     <android.support.v7.widget.SwitchCompat
-        android:layout_width="wrap_content"
+        android:id="@+id/enableSwitch"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:id="@+id/enableSwitch"/>
-
-    <Button
-        android:layout_width="100dp"
-        android:layout_height="60dp"
-        android:id="@+id/btn"
-        android:onClick="getLyrics"/>
+        android:gravity="end"
+        android:layout_margin="3dp"
+        android:checked="true"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp">
+        android:layout_margin="5dp"
+        android:orientation="vertical">
 
         <android.support.design.widget.TextInputLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="5">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <EditText
-                android:id="@+id/nameEt"
+                android:id="@+id/trackNameEt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Enter track name" />
         </android.support.design.widget.TextInputLayout>
 
-        <Button
-            android:id="@+id/btnSearch"
-            android:layout_width="0dp"
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@android:drawable/ic_menu_search"/>
+            android:layout_marginTop="3dp">
+
+            <EditText
+                android:id="@+id/artistNameEt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter artist name" />
+        </android.support.design.widget.TextInputLayout>
+
+
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:padding="3dp">
+    <Button
+        android:id="@+id/btnSearch"
+        android:layout_width="100dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        android:text="Search" />
 
-    </android.support.v7.widget.RecyclerView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_info_details"
+            android:layout_margin="3dp"
+            android:padding="5dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:padding="5dp"
+            android:text="To search for lyrics, please enter track name and artist name"
+            android:textColor="@android:color/black" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_info_details"
+            android:layout_margin="3dp"
+            android:padding="5dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:padding="5dp"
+            android:text="Go to the Music Player. You'll get a notification on playing a song. Click on the notification to enjoy the lyrics of the song! You can disable this service anytime using the switch/toggle above."
+            android:textColor="@android:color/black" />
+    </LinearLayout>
 
 
 </LinearLayout>

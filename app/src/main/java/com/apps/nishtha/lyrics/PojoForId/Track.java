@@ -1,10 +1,10 @@
-package com.apps.nishtha.lyrics;
+package com.apps.nishtha.lyrics.PojoForId;
 
 /**
  * Created by nishtha on 20/7/17.
  */
 
-class Track {
+public class Track {
     private String track_share_url;
     private String track_name;
     private String artist_name;

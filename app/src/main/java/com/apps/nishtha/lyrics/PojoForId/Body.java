@@ -1,4 +1,4 @@
-package com.apps.nishtha.lyrics;
+package com.apps.nishtha.lyrics.PojoForId;
 
 import java.util.ArrayList;
 
@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * Created by nishtha on 20/7/17.
  */
 
-class Body {
+public class Body {
 
     private ArrayList<TrackList> track_list;
 

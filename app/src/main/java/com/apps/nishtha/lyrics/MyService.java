@@ -23,22 +23,6 @@ public class MyService extends Service {
         audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
         musicReceiver = new MusicReceiver();
 
-//
-//        if (isNetworkAvailable(getBaseContext())) {
-//            Notification notification= new NotificationCompat.Builder(getBaseContext())
-//                    .setContentTitle("Click on the notification to know the lyrics")
-//                    .setSmallIcon(R.mipmap.ic_launcher)
-//                    .setContentText("")
-//                    .setContentIntent(PendingIntent.getActivity(getBaseContext(),123,
-//                            new Intent(getBaseContext(),DisplayLyricsActivity.class),PendingIntent.FLAG_UPDATE_CURRENT))
-//                    .build();
-//
-//            ((NotificationManager)(getSystemService(NOTIFICATION_SERVICE))).notify(1,notification);
-//        }
-
-//        Thread thread=new Thread(new Runnable() {
-//            @Override
-//            public void run() {
         Intent i = new Intent();
         IntentFilter iF = new IntentFilter();
 
@@ -48,14 +32,17 @@ public class MyService extends Service {
         iF.addAction("com.htc.music.playstatechanged");
         iF.addAction("com.htc.music.playbackcomplete");
         iF.addAction("com.htc.music.metachanged");
+        iF.addAction("com.htc.music.queuechanged");
         //MIUI Player
         iF.addAction("com.miui.player.playstatechanged");
         iF.addAction("com.miui.player.playbackcomplete");
         iF.addAction("com.miui.player.metachanged");
+        iF.addAction("com.miui.player.queuechanged");
         //Real
         iF.addAction("com.real.IMP.playstatechanged");
         iF.addAction("com.real.IMP.playbackcomplete");
         iF.addAction("com.real.IMP.metachanged");
+        iF.addAction("com.real.IMP.queuechanged");
         //SEMC Music Player
         iF.addAction("com.sonyericsson.music.playbackcontrol.ACTION_TRACK_STARTED");
         iF.addAction("com.sonyericsson.music.playbackcontrol.ACTION_PAUSED");
@@ -63,22 +50,40 @@ public class MyService extends Service {
         iF.addAction("com.sonyericsson.music.metachanged");
         iF.addAction("com.sonyericsson.music.playbackcomplete");
         iF.addAction("com.sonyericsson.music.playstatechanged");
+        iF.addAction("com.sonyericsson.music.queuechanged");
         //rdio
         iF.addAction("com.rdio.android.metachanged");
         iF.addAction("com.rdio.android.playstatechanged");
         //Samsung Music Player
-        iF.addAction("com.samsung.sec.android.MusicPlayer.playstatechanged");
-        iF.addAction("com.samsung.sec.android.MusicPlayer.playbackcomplete");
-        iF.addAction("com.samsung.sec.android.MusicPlayer.metachanged");
+        iF.addAction("com.sec.android.app.music.playstatechanged");
+        iF.addAction("com.sec.android.app.music.metachanged");
+        iF.addAction("com.sec.android.app.music.playbackcomplete");
+        iF.addAction("com.sec.android.app.music.queuechanged");
+        iF.addAction("com.android.musicfx.playstatechanged");
+        iF.addAction("com.android.musicfx.metachanged");
+        iF.addAction("com.android.musicfx.playbackcomplete");
+        iF.addAction("com.android.musicfx.queuechanged");
+
+        iF.addAction("com.sec.android.MusicPlayer.playstatechanged");
+        iF.addAction("com.sec.android.MusicPlayer.playbackcomplete");
+        iF.addAction("com.sec.android.MusicPlayer.metachanged");
+        iF.addAction("com.sec.android.MusicPlayer.queuechanged");
         iF.addAction("com.sec.android.app.music.playstatechanged");
         iF.addAction("com.sec.android.app.music.playbackcomplete");
-        iF.addAction("com.sec.android.app.music.metachanged");
+        iF.addAction("com.sec.android.app.music.queuechanged");
+
+        iF.addAction("com.google.android.music.metachanged");
+        iF.addAction("com.google.android.music.playbackcomplete");
+        iF.addAction("com.google.android.music.metachanged");
+        iF.addAction("com.google.android.music.queuechanged");
         //Winamp
         iF.addAction("com.nullsoft.winamp.playstatechanged");
         iF.addAction("com.nullsoft.winamp.metachanged");
+        iF.addAction("com.nullsoft.winamp.queuechanged");
         //Amazon
         iF.addAction("com.amazon.mp3.playstatechanged");
         iF.addAction("com.amazon.mp3.metachanged");
+        iF.addAction("com.amazon.mp3.queuechanged");
         //Rhapsody
         iF.addAction("com.rhapsody.playstatechanged");
         //PowerAmp
@@ -97,28 +102,20 @@ public class MyService extends Service {
 
         // Read action when music player changed current song
         // stock music player
-//        iF.addAction("com.android.music.metachanged");
-//
-//        // MIUI music player
-//        iF.addAction("com.miui.player.metachanged");
-//
-//        // HTC music player
-//        iF.addAction("com.htc.music.metachanged");
-//
-//        // WinAmp
-//        iF.addAction("com.nullsoft.winamp.metachanged");
-//
-//        // MyTouch4G
-//        iF.addAction("com.real.IMP.metachanged");
+        iF.addAction("com.android.music.metachanged");
+
+        // MyTouch4G
+        iF.addAction("com.real.IMP.metachanged");
+
+        iF.addAction("com.spotify.music.playbackstatechanged");
+        iF.addAction("com.spotify.music.metadatachanged");
+        iF.addAction("com.spotify.music.queuechanged");
 
         if(isNetworkAvailable(getBaseContext())) {
             registerReceiver(musicReceiver, iF);
         } else{
             Toast.makeText(getBaseContext(),"Sorry, check your Internet connection and restart the app!", Toast.LENGTH_LONG).show();
         }
-//            }
-//        });
-
         return super.onStartCommand(intent, flags, startId);
     }
 

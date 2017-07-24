@@ -7,9 +7,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
+import com.apps.nishtha.lyrics.PojoForId.Details;
+import com.apps.nishtha.lyrics.PojoLyrics.LyricsDetails;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -26,17 +27,14 @@ import static android.content.Context.NOTIFICATION_SERVICE;
 public class MusicReceiver extends BroadcastReceiver {
 
     OkHttpClient okHttpClient = new OkHttpClient();
-    ArrayList<Track> trackArrayList = new ArrayList<>();
     ArrayList<String> trackIdArrayList = new ArrayList<>();
     public static final String TAG = "TAG";
     Context c;
-    String trackId;
     String track;
     String lyrics;
 
     StringBuilder artistName;
     StringBuilder trackName;
-    AlertDialog alertDialog;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -89,14 +87,25 @@ public class MusicReceiver extends BroadcastReceiver {
                     artistName.append(artist.charAt(i));
                 }
             }
-//            if(artistName.length()>=3){
-//                if(artist.substring(0,3).equals("www")){
-//                    artistName.replace(0,artistName.length(),"");
-//                }
-//            }
+            if (artistName.length() >= 7) {
+                if (artist.substring(0, 7).equals("Unknown")) {
+                    artistName.replace(0, artistName.length(), "");
+                }
+            }
         }
 
-        getTrackId(trackName.toString(), artistName.toString());
+        Notification notification = new NotificationCompat.Builder(c)
+                .setContentTitle("Lyrics unavailable")
+                .setContentText("Sorry!")
+                .setSmallIcon(R.mipmap.music)
+                .setAutoCancel(true)
+                .build();
+
+        if (track == null) {
+            ((NotificationManager) (c.getSystemService(NOTIFICATION_SERVICE))).notify(1, notification);
+        } else {
+            getTrackId(trackName.toString(), artistName.toString());
+        }
 
 
     }
@@ -123,48 +132,34 @@ public class MusicReceiver extends BroadcastReceiver {
                                                       if (trackIdArrayList.size() != 0) {
                                                           trackIdArrayList.clear();
                                                       }
-
-                                                      details = gson.fromJson(result, Details.class);
-//                                                      Log.d(TAG, "onResponse: size of tracklist " + details.getMessage().getBody().getTrack_list().size());
-//                if (details != null && details.getMessage() != null && details.getMessage().getBody() != null && details.getMessage().getBody().getTrack_list() != null) {
-                                                      for (int i = 0; i < details.getMessage().getBody().getTrack_list().size(); i++) {
-                                                          trackIdArrayList.add(details.getMessage().getBody().getTrack_list().get(i).getTrack().getTrack_id());
-//                                                          Log.d(TAG, "onResponse: size of trackidlist " + trackIdArrayList.size());
+                                                      try {
+                                                          details = gson.fromJson(result, Details.class);
+                                                          for (int i = 0; i < details.getMessage().getBody().getTrack_list().size(); i++) {
+                                                              trackIdArrayList.add(details.getMessage().getBody().getTrack_list().get(i).getTrack().getTrack_id());
+                                                          }
+                                                          getLyrics();
+                                                      } catch (Exception e){
+                                                          Notification notification = new NotificationCompat.Builder(c)
+                                                                  .setContentTitle("Sorry!")
+                                                                  .setContentText("Invalid request!")
+                                                                  .setSmallIcon(R.mipmap.music)
+                                                                  .setAutoCancel(true)
+                                                                  .build();
+                                                          ((NotificationManager) (c.getSystemService(NOTIFICATION_SERVICE))).notify(1, notification);
                                                       }
-//                                                      Log.d(TAG, "onResponse: size of trackidlist outside for " + trackIdArrayList.size());
-
-
-                                                      getLyrics();
-//                                                      if(trackIdArrayList.size()!=0) {
-//                                                          getLyrics();
-//                                                      }
-//                                                      else {
-////                                                          Toast.makeText(c,"Sorry! Name of the song saved is not apt !",Toast.LENGTH_LONG).show();
-//                                                      }
-//
-//     } else {
-//                }
-
                                                   }
 
                                               }
-
         );
-
     }
 
     public void getLyrics() {
-//        Log.d(TAG, "getLyrics: "+"https://api.musixmatch.com/ws/1.1/track.lyrics.get?apikey=0e3945b8ba5f77f377843ec4b2539360"+trackIdArrayList.get(0));
-//        Log.d(TAG, "getLyrics: size of tracid list" + trackIdArrayList.size());
-        String url;
-        url = "https://api.musixmatch.com/ws/1.1/track.lyrics.get?apikey=0e3945b8ba5f77f377843ec4b2539360";
+        StringBuilder url = new StringBuilder();
+        url.append("https://api.musixmatch.com/ws/1.1/track.lyrics.get?apikey=0e3945b8ba5f77f377843ec4b2539360");
         if (trackIdArrayList.size() != 0) {
-            Log.d(TAG, "getLyrics: " + trackIdArrayList.size());
-            url = url + "&track_id=" + trackIdArrayList.get(0);
-            Log.d(TAG, "getLyrics: " + url.toString());
-
+            url.append("&track_id=" + trackIdArrayList.get(0));
             Request request1 = new Request.Builder()
-                    .url(url)
+                    .url(url.toString())
                     .build();
             okHttpClient.newCall(request1).enqueue(new Callback() {
                 @Override
@@ -176,42 +171,48 @@ public class MusicReceiver extends BroadcastReceiver {
                 public void onResponse(Call call, Response response) throws IOException {
                     String result = response.body().string();
                     Gson gson = new Gson();
-                    LyricsDetails lyricsDetails = gson.fromJson(result, LyricsDetails.class);
-                    if (lyricsDetails != null && lyricsDetails.getMessageLyrics() != null && lyricsDetails.getMessageLyrics().getBodyLyrics() != null && lyricsDetails.getMessageLyrics().getBodyLyrics().getLyrics() != null && lyricsDetails.getMessageLyrics().getBodyLyrics().getLyrics().getLyrics_body() != null) {
-                        lyrics = lyricsDetails.getMessageLyrics().getBodyLyrics().getLyrics().getLyrics_body();
-                        Log.d("TAG", "onResponse: " + lyrics);
 
-                        Intent displayIntent = new Intent(c, DisplayLyricsActivity.class);
-                        displayIntent.putExtra("lyrics", lyrics);
-                        displayIntent.putExtra("songName",trackName.toString());
-                        displayIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-<<<<<<< HEAD
-                        displayIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        displayIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                        c.startActivity(displayIntent);
-=======
+                    try {
+                        LyricsDetails lyricsDetails = gson.fromJson(result, LyricsDetails.class);
 
-//                        c.startActivity(displayIntent);
+                        if (lyricsDetails != null && lyricsDetails.getMessageLyrics() != null && lyricsDetails.getMessageLyrics().getBodyLyrics() != null && lyricsDetails.getMessageLyrics().getBodyLyrics().getLyrics() != null && lyricsDetails.getMessageLyrics().getBodyLyrics().getLyrics().getLyrics_body() != null) {
+                            lyrics = lyricsDetails.getMessageLyrics().getBodyLyrics().getLyrics().getLyrics_body();
 
+                            Intent displayIntent = new Intent(c, DisplayLyricsActivity.class);
+                            displayIntent.putExtra("lyrics", lyrics);
+                            displayIntent.putExtra("songName", trackName.toString());
+                            displayIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            displayIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            displayIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+
+                            Notification notification = new NotificationCompat.Builder(c)
+                                    .setContentTitle("Want to know the lyrics?")
+                                    .setContentText("Current song : " + trackName)
+                                    .setSmallIcon(R.mipmap.music)
+                                    .setAutoCancel(true)
+                                    .setContentIntent(PendingIntent.getActivity(c, 123, displayIntent, PendingIntent.FLAG_UPDATE_CURRENT))
+                                    .build();
+
+                            ((NotificationManager) (c.getSystemService(NOTIFICATION_SERVICE))).notify(1, notification);
+                        }
+                    } catch (Exception e) {
                         Notification notification = new NotificationCompat.Builder(c)
-                                .setContentTitle("Want to know the lyrics?")
-                                .setContentText("Current song : " + trackName)
-                                .setSmallIcon(R.drawable.tune)
+                                .setContentTitle("Sorry!")
+                                .setContentText("Lyrics Unavailable for the song")
+                                .setSmallIcon(R.mipmap.music)
                                 .setAutoCancel(true)
-                                .setContentIntent(PendingIntent.getActivity(c, 123, displayIntent, PendingIntent.FLAG_UPDATE_CURRENT))
                                 .build();
-
                         ((NotificationManager) (c.getSystemService(NOTIFICATION_SERVICE))).notify(1, notification);
->>>>>>> 087b162883b3d1553ed39a833ba6a42a4b1cb429
                     }
                 }
+
             });
         } else {
 
             Notification notification = new NotificationCompat.Builder(c)
                     .setContentTitle("Lyrics unavailable")
                     .setContentText("Sorry! The song seems to be pirated")
-                    .setSmallIcon(R.drawable.tune)
+                    .setSmallIcon(R.mipmap.music)
                     .setAutoCancel(true)
                     .build();
 
@@ -219,36 +220,7 @@ public class MusicReceiver extends BroadcastReceiver {
         }
     }
 
-<<<<<<< HEAD
-    /*public void getLyrics2() {
-        Log.d(TAG, "getLyrics: " + trackIdArrayList.get(0));
-        Request request1 = new Request.Builder()
-                .url("https://api.musixmatch.com/ws/1.1/track.lyrics.get?apikey=0e3945b8ba5f77f377843ec4b2539360&track_id=" + trackIdArrayList.get(0))
-                .build();
-        okHttpClient.newCall(request1).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
 
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String result = response.body().string();
-                Gson gson = new Gson();
-                LyricsDetails lyricsDetails = gson.fromJson(result, LyricsDetails.class);
-                lyrics = lyricsDetails.getMessageLyrics().getBodyLyrics().getLyrics().getLyrics_body();
-                Log.d(TAG, "onResponse: " + lyrics);
-                Intent displayIntent = new Intent(c, DisplayLyricsActivity.class);
-                displayIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                displayIntent.putExtra("lyrics", lyrics);
-                c.startActivity(displayIntent);
-            }
-        });
-
-    }*/
-=======
-
->>>>>>> 087b162883b3d1553ed39a833ba6a42a4b1cb429
 }
 // https://api.musixmatch.com/ws/1.1/track.lyrics.get?apikey=0e3945b8ba5f77f377843ec4b2539360&track_id=113673904
 // http://api.musixmatch.com/ws/1.1/track.search?apikey=0e3945b8ba5f77f377843ec4b2539360&q_track=Perfect&q_artist=Ed

@@ -8,21 +8,31 @@
     android:layout_height="match_parent"
     tools:context="com.apps.nishtha.lyrics.DisplayLyricsActivity"
     android:background="#000000">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:hint="Lyrics here"
+        android:paddingTop="8dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:id="@+id/title"
+        android:layout_margin="8dp"
+        android:textColor="@android:color/white"/>
+
 <ScrollView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="10">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:hint="Lyrics here"
         android:paddingTop="8dp"
-        android:layout_gravity="center"
+        android:paddingBottom="10dp"
         android:id="@+id/textView"
         android:layout_margin="8dp"
         android:textColor="@android:color/white"/>
-<<<<<<< HEAD
 </ScrollView>
 </LinearLayout>
-=======
-</ScrollView>
->>>>>>> 087b162883b3d1553ed39a833ba6a42a4b1cb429
