@@ -35,7 +35,8 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".DisplayLyricsActivity"></activity>
+        <activity android:name=".DisplayLyricsActivity"
+            android:theme="@style/Theme.TransparentOrignal"></activity>
     </application>
 
 </manifest>

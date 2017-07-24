@@ -185,6 +185,11 @@ public class MusicReceiver extends BroadcastReceiver {
                         displayIntent.putExtra("lyrics", lyrics);
                         displayIntent.putExtra("songName",trackName.toString());
                         displayIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+<<<<<<< HEAD
+                        displayIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        displayIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                        c.startActivity(displayIntent);
+=======
 
 //                        c.startActivity(displayIntent);
 
@@ -197,6 +202,7 @@ public class MusicReceiver extends BroadcastReceiver {
                                 .build();
 
                         ((NotificationManager) (c.getSystemService(NOTIFICATION_SERVICE))).notify(1, notification);
+>>>>>>> 087b162883b3d1553ed39a833ba6a42a4b1cb429
                     }
                 }
             });
@@ -213,7 +219,36 @@ public class MusicReceiver extends BroadcastReceiver {
         }
     }
 
+<<<<<<< HEAD
+    /*public void getLyrics2() {
+        Log.d(TAG, "getLyrics: " + trackIdArrayList.get(0));
+        Request request1 = new Request.Builder()
+                .url("https://api.musixmatch.com/ws/1.1/track.lyrics.get?apikey=0e3945b8ba5f77f377843ec4b2539360&track_id=" + trackIdArrayList.get(0))
+                .build();
+        okHttpClient.newCall(request1).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
 
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String result = response.body().string();
+                Gson gson = new Gson();
+                LyricsDetails lyricsDetails = gson.fromJson(result, LyricsDetails.class);
+                lyrics = lyricsDetails.getMessageLyrics().getBodyLyrics().getLyrics().getLyrics_body();
+                Log.d(TAG, "onResponse: " + lyrics);
+                Intent displayIntent = new Intent(c, DisplayLyricsActivity.class);
+                displayIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                displayIntent.putExtra("lyrics", lyrics);
+                c.startActivity(displayIntent);
+            }
+        });
+
+    }*/
+=======
+
+>>>>>>> 087b162883b3d1553ed39a833ba6a42a4b1cb429
 }
 // https://api.musixmatch.com/ws/1.1/track.lyrics.get?apikey=0e3945b8ba5f77f377843ec4b2539360&track_id=113673904
 // http://api.musixmatch.com/ws/1.1/track.search?apikey=0e3945b8ba5f77f377843ec4b2539360&q_track=Perfect&q_artist=Ed
