@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -12,57 +12,48 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
-        android:layout_margin="3dp"
-        android:checked="true"/>
+        android:checked="true"
+        android:layout_marginTop="13dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/fab"
+        android:layout_alignEnd="@+id/fab" />
 
     <TextView
-        style="@style/TextAppearance.AppCompat"
+        android:id="@+id/tvInvisible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Want to know the lyrics of your favourite song? Enter the details below, click on 'Search' and enjoy the lyrics!"
-        android:textSize="16sp"
-        android:layout_marginTop="8dp"
+        android:text="Welcome! Click on the button below to search for the lyrics."
+        android:textSize="12sp"
+
         android:padding="10dp"
-        android:textStyle="italic"/>
+        android:textStyle="italic"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:layout_below="@+id/enableSwitch"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
-    <LinearLayout
+    <android.support.v7.widget.RecyclerView
+        android:layout_marginTop="13dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:orientation="vertical">
+        android:id="@+id/recView"
+        android:layout_below="@+id/tvInvisible"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+    </android.support.v7.widget.RecyclerView>
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:fabSize="normal"
+        android:src="@android:drawable/ic_search_category_default"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="19dp"
+        android:layout_marginEnd="19dp"
+        android:layout_marginBottom="17dp"
+        android:id="@+id/fab" />
 
-            <EditText
-                android:id="@+id/trackNameEt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Enter track name" />
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="3dp">
-
-            <EditText
-                android:id="@+id/artistNameEt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Enter artist name" />
-        </android.support.design.widget.TextInputLayout>
-
-
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/btnSearch"
-        android:layout_width="100dp"
-        android:layout_height="60dp"
-        android:layout_gravity="center"
-        android:text="Search" />
-
-
-</LinearLayout>
+</RelativeLayout>

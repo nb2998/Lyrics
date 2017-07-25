@@ -4,19 +4,24 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.apps.nishtha.lyrics.PojoForId.Details;
-import com.apps.nishtha.lyrics.PojoLyrics.LyricsDetails;
+import com.apps.nishtha.lyrics.PojoForId.Track;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -37,30 +42,62 @@ public class MainActivity extends AppCompatActivity {
     OkHttpClient okHttpClient;
     public static final String TAG = "TAG";
     ArrayList<String> trackIdArrayList = new ArrayList<>();
-    String lyrics;
-    StringBuilder url = new StringBuilder();
 
-    boolean switchIsChecked;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     Intent serviceIntent;
+    StringBuilder trackName;
+    StringBuilder artistName;
+    RecyclerView recView;
+    TrackAdapter trackAdapter;
+    ArrayList<Track> trackArrayList=new ArrayList<>();
+    TextView tvInvisible;
+    FloatingActionButton fab;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        tvInvisible= (TextView) findViewById(R.id.tvInvisible);
+        recView= (RecyclerView) findViewById(R.id.recView);
+        trackAdapter=new TrackAdapter(this,trackArrayList);
+        recView.setLayoutManager(new LinearLayoutManager(this));
+        recView.setAdapter(trackAdapter);
         okHttpClient = new OkHttpClient();
-        trackNameEt = (EditText) findViewById(R.id.trackNameEt);
-        artistNameEt = (EditText) findViewById(R.id.artistNameEt);
-        btnSearch = (Button) findViewById(R.id.btnSearch);
         switchCompat = (SwitchCompat) findViewById(R.id.enableSwitch);
-        btnSearch.setOnClickListener(new View.OnClickListener() {
+
+        fab= (FloatingActionButton) findViewById(R.id.fab);
+        View v=(LayoutInflater.from(this)).inflate(R.layout.dialog,null,false);
+        trackNameEt= (EditText) v.findViewById(R.id.trackNameEt);
+        artistNameEt= (EditText) v.findViewById(R.id.artistNameEt);
+        final AlertDialog alertDialog=new AlertDialog.Builder(MainActivity.this)
+                .setTitle("Search the lyrics")
+                .setView(v)
+                .setPositiveButton("Search", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        getId();
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create();
+
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getId();
+                alertDialog.show();
             }
         });
+
+
     }
 
     @Override
@@ -104,8 +141,7 @@ public class MainActivity extends AppCompatActivity {
                             .setNegativeButton("No", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    switchCompat.setChecked(true
-                                    );
+                                    switchCompat.setChecked(true);
                                     editor.putBoolean("switchIsChecked", true);
                                     editor.apply();
                                     startService(serviceIntent);
@@ -119,9 +155,6 @@ public class MainActivity extends AppCompatActivity {
         });
         super.onResume();
     }
-
-    StringBuilder trackName;
-    StringBuilder artistName;
 
     public void getId() {
         String track = trackNameEt.getText().toString();
@@ -191,72 +224,28 @@ public class MainActivity extends AppCompatActivity {
                 if (trackIdArrayList.size() != 0) {
                     trackIdArrayList.clear();
                 }
+                if (trackArrayList.size() != 0) {
+                    trackArrayList.clear();
+                }
 
                 details = gson.fromJson(result, Details.class);
                 for (int i = 0; i < details.getMessage().getBody().getTrack_list().size(); i++) {
+                    trackArrayList.add(details.getMessage().getBody().getTrack_list().get(i).getTrack());
                     trackIdArrayList.add(details.getMessage().getBody().getTrack_list().get(i).getTrack().getTrack_id());
                 }
-
-
-                getLyrics();
+                MainActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+//                        tvInvisible.setVisibility(View.VISIBLE);
+                        tvInvisible.setText("Click on any track to read the lyrics.");
+                        trackAdapter.notifyDataSetChanged();
+                        if(trackArrayList.size()==0){
+                            Toast.makeText(MainActivity.this,"No results found!",Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
             }
         });
-    }
-
-    public void getLyrics() {
-        url.append("https://api.musixmatch.com/ws/1.1/track.lyrics.get?apikey=0e3945b8ba5f77f377843ec4b2539360&track_id=");
-        if (trackIdArrayList.size() != 0) {
-            url.append(trackIdArrayList.get(0));
-
-            Request request1 = new Request.Builder()
-                    .url(url.toString())
-                    .build();
-            okHttpClient.newCall(request1).enqueue(new Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {
-                }
-                @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                    String result = response.body().string();
-                    Gson gson = new Gson();
-
-                    try {
-                        LyricsDetails lyricsDetails = gson.fromJson(result, LyricsDetails.class);
-
-                        if (lyricsDetails != null && lyricsDetails.getMessageLyrics() != null && lyricsDetails.getMessageLyrics().getBodyLyrics() != null && lyricsDetails.getMessageLyrics().getBodyLyrics().getLyrics() != null && lyricsDetails.getMessageLyrics().getBodyLyrics().getLyrics().getLyrics_body() != null) {
-                            lyrics = lyricsDetails.getMessageLyrics().getBodyLyrics().getLyrics().getLyrics_body();
-
-                            Intent displayIntent = new Intent(MainActivity.this, DisplayLyricsActivity.class);
-                            displayIntent.putExtra("lyrics", lyrics);
-                            displayIntent.putExtra("songName", trackName.toString());
-                            displayIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            displayIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            displayIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-
-                            startActivity(displayIntent);
-                        }
-                    } catch (Exception e) {
-                        Intent displayIntent = new Intent(MainActivity.this, DisplayLyricsActivity.class);
-                        displayIntent.putExtra("lyrics", "Sorry! Lyrics Unavailable for the song");
-                        displayIntent.putExtra("songName", "Unavailable");
-                        displayIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        displayIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        displayIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-
-                        startActivity(displayIntent);
-                    }
-                }
-            });
-        } else {
-            Intent displayIntent = new Intent(MainActivity.this, DisplayLyricsActivity.class);
-            displayIntent.putExtra("lyrics", "Sorry! Song name or artist name seems to be incorrect!");
-            displayIntent.putExtra("songName", "Unavailable");
-            displayIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            displayIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            displayIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-
-            startActivity(displayIntent);
-        }
     }
 
     @Override

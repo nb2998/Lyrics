@@ -5,7 +5,6 @@ package com.apps.nishtha.lyrics.PojoForId;
  */
 
 public class Track {
-    private String track_share_url;
     private String track_name;
     private String artist_name;
     private String track_id;
@@ -22,12 +21,7 @@ public class Track {
         return track_name;
     }
 
-    public String getTrack_share_url() {
-        return track_share_url;
-    }
-
-    public Track(String track_share_url,String track_name,String artist_name,String track_id) {
-        this.track_share_url = track_share_url;
+    public Track(String track_name,String artist_name,String track_id) {
         this.track_name=track_name;
         this.artist_name=artist_name;
         this.track_id=track_id;

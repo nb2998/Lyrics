@@ -111,12 +111,14 @@ public class MyService extends Service {
         iF.addAction("com.spotify.music.metadatachanged");
         iF.addAction("com.spotify.music.queuechanged");
 
+
         if(isNetworkAvailable(getBaseContext())) {
             registerReceiver(musicReceiver, iF);
         } else{
             Toast.makeText(getBaseContext(),"Sorry, check your Internet connection and restart the app!", Toast.LENGTH_LONG).show();
         }
-        return super.onStartCommand(intent, flags, startId);
+//        return super.onStartCommand(intent, flags, startId);
+        return START_STICKY;
     }
 
     @Override
