@@ -9,12 +9,21 @@
 
     <android.support.v7.widget.SwitchCompat
         android:id="@+id/enableSwitch"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="end"
+        android:layout_gravity="end"
         android:layout_margin="3dp"
         android:checked="true"/>
+
+    <TextView
+        style="@style/TextAppearance.AppCompat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Want to know the lyrics of your favourite song? Enter the details below, click on 'Search' and enjoy the lyrics!"
+        android:textSize="16sp"
+        android:layout_marginTop="8dp"
+        android:padding="10dp"
+        android:textStyle="italic"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -54,46 +63,6 @@
         android:layout_height="60dp"
         android:layout_gravity="center"
         android:text="Search" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_menu_info_details"
-            android:layout_margin="3dp"
-            android:padding="5dp"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:padding="5dp"
-            android:text="To search for lyrics, please enter track name and artist name"
-            android:textColor="@android:color/black" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_menu_info_details"
-            android:layout_margin="3dp"
-            android:padding="5dp"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:padding="5dp"
-            android:text="Go to the Music Player. You'll get a notification on playing a song. Click on the notification to enjoy the lyrics of the song! You can disable this service anytime using the switch/toggle above."
-            android:textColor="@android:color/black" />
-    </LinearLayout>
 
 
 </LinearLayout>

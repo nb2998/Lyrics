@@ -1,10 +1,14 @@
 package com.apps.nishtha.lyrics;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -33,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
     OkHttpClient okHttpClient;
     public static final String TAG = "TAG";
     ArrayList<String> trackIdArrayList = new ArrayList<>();
+    String lyrics;
+    StringBuilder url = new StringBuilder();
 
     boolean switchIsChecked;
     SharedPreferences sharedPreferences;
@@ -43,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         okHttpClient = new OkHttpClient();
         trackNameEt = (EditText) findViewById(R.id.trackNameEt);
@@ -71,7 +76,8 @@ public class MainActivity extends AppCompatActivity {
             startService(serviceIntent);
         } else {
             switchCompat.setChecked(false);
-            Toast.makeText(MainActivity.this, "Service disabled! Please enable the services to enjoy the lyrics!", Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this, "Service disabled! Please enable the services to enjoy the lyrics " +
+                    "while listening to music!", Toast.LENGTH_LONG).show();
         }
 
         switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -82,10 +88,32 @@ public class MainActivity extends AppCompatActivity {
                     editor.apply();
                     startService(serviceIntent);
                 } else {
-                    editor.putBoolean("switchIsChecked", false);
-                    editor.apply();
-                    stopService(serviceIntent);
-                    Toast.makeText(MainActivity.this, "Sorry! Enable the services to know the lyrics", Toast.LENGTH_LONG).show();
+                    AlertDialog alertDialog=new AlertDialog.Builder(MainActivity.this)
+                            .setTitle("Are you sure you want to disable the service")
+                            .setMessage("By doing so, you would stop receiving notifications to know the lyrics while listening to songs.")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    editor.putBoolean("switchIsChecked", false);
+                                    editor.apply();
+                                    stopService(serviceIntent);
+                                    Toast.makeText(MainActivity.this, "Service disabled! Please enable the services to enjoy the lyrics while listening to music!", Toast.LENGTH_LONG).show();
+                                    dialog.dismiss();
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    switchCompat.setChecked(true
+                                    );
+                                    editor.putBoolean("switchIsChecked", true);
+                                    editor.apply();
+                                    startService(serviceIntent);
+                                    dialog.dismiss();
+                                }
+                            })
+                            .show();
+
                 }
             }
         });
@@ -175,10 +203,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
-    String lyrics;
-    StringBuilder url = new StringBuilder();
-
     public void getLyrics() {
         url.append("https://api.musixmatch.com/ws/1.1/track.lyrics.get?apikey=0e3945b8ba5f77f377843ec4b2539360&track_id=");
         if (trackIdArrayList.size() != 0) {
@@ -190,9 +214,7 @@ public class MainActivity extends AppCompatActivity {
             okHttpClient.newCall(request1).enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
-
                 }
-
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
                     String result = response.body().string();
@@ -224,7 +246,6 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(displayIntent);
                     }
                 }
-
             });
         } else {
             Intent displayIntent = new Intent(MainActivity.this, DisplayLyricsActivity.class);
@@ -236,5 +257,39 @@ public class MainActivity extends AppCompatActivity {
 
             startActivity(displayIntent);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        (getMenuInflater()).inflate(R.menu.menu_main,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId()==R.id.infoMenu){
+            AlertDialog alertDialog=new AlertDialog.Builder(MainActivity.this)
+                    .setTitle("Information")
+                    .setMessage("By enabling the service, you'll get a notification on playing any song in the Music Player. Click on the notification to enjoy the lyrics of the song! You can disable this service anytime using the switch/toggle above.")
+                    .setPositiveButton("Got it!", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .show();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        serviceIntent = new Intent(MainActivity.this, MyService.class);
+        if (sharedPreferences.getBoolean("switchIsChecked", true)) {
+            switchCompat.setChecked(true);
+            startService(serviceIntent);
+        }
+        super.onDestroy();
     }
 }
