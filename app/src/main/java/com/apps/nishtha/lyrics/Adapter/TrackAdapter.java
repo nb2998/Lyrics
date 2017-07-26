@@ -1,16 +1,20 @@
-package com.apps.nishtha.lyrics;
+package com.apps.nishtha.lyrics.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.apps.nishtha.lyrics.Activities.DisplayLyricsActivity;
+import com.apps.nishtha.lyrics.PojoForId.Details;
 import com.apps.nishtha.lyrics.PojoForId.Track;
 import com.apps.nishtha.lyrics.PojoLyrics.LyricsDetails;
+import com.apps.nishtha.lyrics.R;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -29,8 +33,10 @@ import okhttp3.Response;
 public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder> {
     Context context;
     ArrayList<Track> trackArrayList;
+    ArrayList<String> trackIdArrayList = new ArrayList<>();
     OkHttpClient okHttpClient;
-    String trackName;
+    String trackName, artistName;
+    String baseUrl = "http://api.musixmatch.com/ws/1.1/track.search?apikey=0e3945b8ba5f77f377843ec4b2539360";
 
     public TrackAdapter(Context context, ArrayList<Track> trackArrayList) {
         this.context = context;
@@ -54,7 +60,8 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder>
             @Override
             public void onClick(View v) {
                 trackName = track.getTrack_name();
-                getLyrics(track.getTrack_id());
+                artistName = track.getArtist_name();
+                getTrackId(trackName, artistName);
             }
         });
     }
@@ -79,10 +86,41 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder>
     StringBuilder url = new StringBuilder();
     String lyrics;
 
-    public void getLyrics(String trackId) {
+    public void getTrackId(String trackName, String artistName) {
+        String search = baseUrl + "&q_track=" + trackName + "&q_artist=" + artistName;
+        Log.d("TAG", "getTrackId: " + search);
+        Request request = new Request.Builder()
+                .url(search)
+                .build();
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+            }
+
+            Details details;
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String result = response.body().string();
+                Gson gson = new Gson();
+
+                if (trackIdArrayList.size() != 0) {
+                    trackIdArrayList.clear();
+                }
+                details = gson.fromJson(result, Details.class);
+                for (int i = 0; i < details.getMessage().getBody().getTrack_list().size(); i++) {
+                    trackIdArrayList.add(details.getMessage().getBody().getTrack_list().get(i).getTrack().getTrack_id());
+
+                }
+                getLyrics();
+            }
+        });
+    }
+
+    public void getLyrics() {
         url.append("https://api.musixmatch.com/ws/1.1/track.lyrics.get?apikey=0e3945b8ba5f77f377843ec4b2539360&track_id=");
-        if (trackId != null) {
-            url.append(trackId);
+        if (trackIdArrayList.size() != 0) {
+            url.append(trackIdArrayList.get(0));
 
             Request request1 = new Request.Builder()
                     .url(url.toString())

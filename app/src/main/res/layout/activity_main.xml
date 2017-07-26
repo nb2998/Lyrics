@@ -1,59 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.apps.nishtha.lyrics.MainActivity">
+    tools:context="com.apps.nishtha.lyrics.Activities.MainActivity">
 
-    <android.support.v7.widget.SwitchCompat
-        android:id="@+id/enableSwitch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:checked="true"
-        android:layout_marginTop="13dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/fab"
-        android:layout_alignEnd="@+id/fab" />
-
-    <TextView
-        android:id="@+id/tvInvisible"
+    <android.support.design.widget.TabLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Welcome! Click on the button below to search for the lyrics."
-        android:textSize="12sp"
+        android:id="@+id/tabLayout">
+    </android.support.design.widget.TabLayout>
 
-        android:padding="10dp"
-        android:textStyle="italic"
-        android:gravity="center"
-        android:textColor="@android:color/white"
-        android:layout_below="@+id/enableSwitch"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+       <android.support.v4.view.ViewPager
+           android:id="@+id/viewPager"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           >
 
-    <android.support.v7.widget.RecyclerView
-        android:layout_marginTop="13dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/recView"
-        android:layout_below="@+id/tvInvisible"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+       </android.support.v4.view.ViewPager>
 
-    </android.support.v7.widget.RecyclerView>
-    <android.support.design.widget.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:fabSize="normal"
-        android:src="@android:drawable/ic_search_category_default"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="19dp"
-        android:layout_marginEnd="19dp"
-        android:layout_marginBottom="17dp"
-        android:id="@+id/fab" />
-
-</RelativeLayout>
+</LinearLayout>

@@ -1,6 +1,4 @@
-package com.apps.nishtha.lyrics;
-
-import com.apps.nishtha.lyrics.PojoForId.Body;
+package com.apps.nishtha.lyrics.PojoForId;
 
 /**
  * Created by nishtha on 20/7/17.

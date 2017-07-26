@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -13,7 +14,7 @@
         android:roundIcon="@mipmap/music"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat">
-        <activity android:name=".MainActivity">
+        <activity android:name=".Activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,16 +27,16 @@
         </activity>
 
         <receiver
-            android:name=".MusicReceiver"
+            android:name=".Receiver.MusicReceiver"
             android:enabled="true"
             android:exported="true" />
 
         <service
-            android:name=".MyService"
+            android:name=".Service.MyService"
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".DisplayLyricsActivity"
+        <activity android:name=".Activities.DisplayLyricsActivity"
             android:theme="@style/Theme.TransparentOrignal"></activity>
     </application>
 

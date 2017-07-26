@@ -1,4 +1,4 @@
-package com.apps.nishtha.lyrics;
+package com.apps.nishtha.lyrics.Service;
 
 import android.app.Service;
 import android.content.Context;
@@ -8,6 +8,8 @@ import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.os.IBinder;
 import android.widget.Toast;
+
+import com.apps.nishtha.lyrics.Receiver.MusicReceiver;
 
 public class MyService extends Service {
 

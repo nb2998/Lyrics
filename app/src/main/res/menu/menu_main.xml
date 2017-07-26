@@ -5,8 +5,9 @@
     <item
         android:id="@+id/infoMenu"
         android:title="Info"
-        app:showAsAction="ifRoom"
+        app:showAsAction="collapseActionView"
         android:icon="@android:drawable/ic_menu_info_details">
 
     </item>
+
 </menu>

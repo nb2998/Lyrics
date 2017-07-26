@@ -1,7 +1,5 @@
 package com.apps.nishtha.lyrics.PojoForId;
 
-import com.apps.nishtha.lyrics.Message;
-
 /**
  * Created by nishtha on 20/7/17.
  */

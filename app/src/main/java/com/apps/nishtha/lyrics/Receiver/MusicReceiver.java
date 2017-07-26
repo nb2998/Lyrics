@@ -1,4 +1,4 @@
-package com.apps.nishtha.lyrics;
+package com.apps.nishtha.lyrics.Receiver;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -9,8 +9,10 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.apps.nishtha.lyrics.Activities.DisplayLyricsActivity;
 import com.apps.nishtha.lyrics.PojoForId.Details;
 import com.apps.nishtha.lyrics.PojoLyrics.LyricsDetails;
+import com.apps.nishtha.lyrics.R;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -88,7 +90,12 @@ public class MusicReceiver extends BroadcastReceiver {
                 }
             }
             if (artistName.length() >= 7) {
-                if (artist.substring(0, 7).equals("Unknown")) {
+                if (artist.substring(0, 7).equals("Unknown")||artist.substring(0, 7).equals("Unknown")) {
+                    artistName.replace(0, artistName.length(), "");
+                }
+            }
+            if (artistName.length() >= 9) {
+                if (artist.substring(0, 9).equals("<unknown>")) {
                     artistName.replace(0, artistName.length(), "");
                 }
             }

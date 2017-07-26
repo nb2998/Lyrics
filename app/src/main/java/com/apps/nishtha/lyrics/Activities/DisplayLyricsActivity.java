@@ -1,10 +1,12 @@
-package com.apps.nishtha.lyrics;
+package com.apps.nishtha.lyrics.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.apps.nishtha.lyrics.R;
 
 public class DisplayLyricsActivity extends AppCompatActivity {
 

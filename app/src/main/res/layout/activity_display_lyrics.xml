@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:id="@+id/linearlayout"
     android:layout_height="match_parent"
-    tools:context="com.apps.nishtha.lyrics.DisplayLyricsActivity"
+    tools:context="com.apps.nishtha.lyrics.Activities.DisplayLyricsActivity"
     android:background="#000000">
 
     <TextView
