@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,7 +87,6 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder>
 
     public void getTrackId(String trackName, String artistName) {
         String search = baseUrl + "&q_track=" + trackName + "&q_artist=" + artistName;
-        Log.d("TAG", "getTrackId: " + search);
         Request request = new Request.Builder()
                 .url(search)
                 .build();
@@ -118,7 +116,7 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder>
     }
 
     public void getLyrics() {
-        url.append("https://api.musixmatch.com/ws/1.1/track.lyrics.get?apikey=0e3945b8ba5f77f377843ec4b2539360&track_id=");
+        url.append("https://api.musixmatch.com/ws/1.1/track.lyrics.get?apikey="+context.getResources().getString(R.string.api_key)+"&track_id=");
         if (trackIdArrayList.size() != 0) {
             url.append(trackIdArrayList.get(0));
 

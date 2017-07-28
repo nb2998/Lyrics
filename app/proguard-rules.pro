@@ -23,3 +23,25 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+-keepattributes Signature
+-keepattributes Annotation
+-keep class okhttp3.** { *; }
+-keep interface okhttp3.** { *; }
+-keep class com.apps.nishtha.lyrics.pojoforid.*
+-keep class com.apps.nishtha.lyrics.pojoforlyrics.*
+-keep public class com.google.gson.**
+-keep public class com.google.gson.** {public private protected *;}
+-keep public class * extends android.app.Service
+-keep public class * extends android.content.BroadcastReceiver
+-keep public class * extends android.content.Fragment
+-keep public class * extends android.content.AppCompatActivity
+#-keep class com.apps.nishtha.lyrics.pojoforid.details
+#-keep class com.apps.nishtha.lyrics.pojoforid.message
+#-keep class com.apps.nishtha.lyrics.pojoforid.track
+#-keep class com.apps.nishtha.lyrics.pojoforid.tracklist
+#-keep class com.apps.nishtha.lyrics.pojolyrics.tracklist
+
+-keep class sun.misc.Unsafe { *; }
+-keep class com.google.gson.stream.** { *; }
+-dontwarn okhttp3.**
+-dontwarn okio.**

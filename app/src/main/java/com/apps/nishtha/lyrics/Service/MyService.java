@@ -110,7 +110,7 @@ public class MyService extends Service {
         iF.addAction("com.real.IMP.metachanged");
 
         iF.addAction("com.spotify.music.playbackstatechanged");
-        iF.addAction("com.spotify.music.metadatachanged");
+            iF.addAction("com.spotify.music.metadatachanged");
         iF.addAction("com.spotify.music.queuechanged");
 
 

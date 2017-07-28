@@ -6,6 +6,14 @@
     android:orientation="vertical"
     tools:context="com.apps.nishtha.lyrics.Activities.MainActivity">
 
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:adSize="SMART_BANNER"
+        app:adUnitId="ca-app-pub-7007784112686547/2033092392"/>
+
     <TextView
         android:id="@+id/tvInvisible"
         android:layout_width="match_parent"
@@ -16,17 +24,19 @@
         android:textStyle="italic"
         android:gravity="center"
         android:textColor="@android:color/white"
+        android:layout_below="@+id/adView"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="12dp" />
 
     <android.support.v7.widget.RecyclerView
-        android:layout_marginTop="13dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/recView"
         android:layout_below="@+id/tvInvisible"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="16dp">
 
     </android.support.v7.widget.RecyclerView>
     <android.support.design.widget.FloatingActionButton

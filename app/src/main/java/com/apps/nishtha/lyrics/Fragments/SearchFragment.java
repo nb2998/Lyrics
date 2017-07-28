@@ -15,10 +15,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.apps.nishtha.lyrics.Adapter.TrackAdapter;
 import com.apps.nishtha.lyrics.PojoForId.Details;
 import com.apps.nishtha.lyrics.PojoForId.Track;
 import com.apps.nishtha.lyrics.R;
-import com.apps.nishtha.lyrics.Adapter.TrackAdapter;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -43,11 +45,13 @@ public class SearchFragment extends Fragment {
     StringBuilder trackName,artistName;
 
     OkHttpClient okHttpClient;
-    String baseUrl = "http://api.musixmatch.com/ws/1.1/track.search?apikey=0e3945b8ba5f77f377843ec4b2539360";
+    String baseUrl="http://api.musixmatch.com/ws/1.1/track.search?apikey=0e3945b8ba5f77f377843ec4b2539360";
 
     ArrayList<Track> trackArrayList=new ArrayList<>();
     ArrayList<String> trackIdArrayList=new ArrayList<>();
     TrackAdapter trackAdapter;
+
+    AdView adView;
 
     public SearchFragment() {
     }
@@ -57,6 +61,7 @@ public class SearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v=inflater.inflate(R.layout.search_fragment,container,false);
+
         okHttpClient=new OkHttpClient();
         tvInvisible= (TextView) v.findViewById(R.id.tvInvisible);
         recView= (RecyclerView) v.findViewById(R.id.recView);
@@ -65,6 +70,10 @@ public class SearchFragment extends Fragment {
         recView.setLayoutManager(new LinearLayoutManager(getContext()));
         trackAdapter=new TrackAdapter(getContext(),trackArrayList);
         recView.setAdapter(trackAdapter);
+
+        adView= (AdView) v.findViewById(R.id.adView);
+        AdRequest adRequest=new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
 
         View dialogView=(LayoutInflater.from(getContext())).inflate(R.layout.dialog,null,false);
         trackNameEt= (EditText) dialogView.findViewById(R.id.trackNameEt);
@@ -76,17 +85,19 @@ public class SearchFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         getTrackId();
-
-
                         trackArrayList.add(new Track(trackName.toString(),artistName.toString(),""));
                         trackAdapter.notifyDataSetChanged();
                         dialog.dismiss();
+                        trackNameEt.setText("");
+                        artistNameEt.setText("");
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
+                        trackNameEt.setText("");
+                        artistNameEt.setText("");
                     }
                 })
                 .create();

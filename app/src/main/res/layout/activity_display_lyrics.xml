@@ -35,4 +35,13 @@
         android:layout_margin="8dp"
         android:textColor="@android:color/white"/>
 </ScrollView>
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_weight="2"
+        app:adSize="SMART_BANNER"
+        app:adUnitId="ca-app-pub-7007784112686547/2033092392"/>
 </LinearLayout>
