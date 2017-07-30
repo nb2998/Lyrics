@@ -16,6 +16,7 @@ import com.apps.nishtha.lyrics.Fragments.AllTracksFragment;
 import com.apps.nishtha.lyrics.Fragments.SearchFragment;
 import com.apps.nishtha.lyrics.Fragments.SettingsFragment;
 import com.apps.nishtha.lyrics.R;
+import com.google.android.gms.ads.MobileAds;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        MobileAds.initialize(this,"ca-app-pub-7007784112686547~1172626234");
 
         ViewPager viewPager= (ViewPager) findViewById(R.id.viewPager);
         viewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager()));
