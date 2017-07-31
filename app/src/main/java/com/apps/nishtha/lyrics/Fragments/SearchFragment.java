@@ -108,8 +108,6 @@ public class SearchFragment extends Fragment {
                 alertDialog.show();
             }
         });
-
-
         return v;
     }
 

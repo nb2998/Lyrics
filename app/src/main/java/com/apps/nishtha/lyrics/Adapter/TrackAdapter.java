@@ -1,7 +1,9 @@
 package com.apps.nishtha.lyrics.Adapter;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Looper;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -36,6 +38,7 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder>
     OkHttpClient okHttpClient;
     String trackName, artistName;
     String baseUrl = "http://api.musixmatch.com/ws/1.1/track.search?apikey=0e3945b8ba5f77f377843ec4b2539360";
+    ProgressDialog progressDialog;
 
     public TrackAdapter(Context context, ArrayList<Track> trackArrayList) {
         this.context = context;
@@ -60,6 +63,10 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder>
             public void onClick(View v) {
                 trackName = track.getTrack_name();
                 artistName = track.getArtist_name();
+                progressDialog=new ProgressDialog(context);
+                progressDialog.setMessage("Loading..");
+                progressDialog.setCanceledOnTouchOutside(false);
+                progressDialog.show();
                 getTrackId(trackName, artistName);
             }
         });
@@ -132,6 +139,14 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder>
                 public void onResponse(Call call, Response response) throws IOException {
                     String result = response.body().string();
                     Gson gson = new Gson();
+
+                    android.os.Handler handler=new android.os.Handler(Looper.getMainLooper());
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressDialog.hide();
+                        }
+                    });
 
                     try {
                         LyricsDetails lyricsDetails = gson.fromJson(result, LyricsDetails.class);

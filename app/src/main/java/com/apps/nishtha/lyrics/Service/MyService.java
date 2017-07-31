@@ -88,16 +88,22 @@ public class MyService extends Service {
         iF.addAction("com.amazon.mp3.queuechanged");
         //Rhapsody
         iF.addAction("com.rhapsody.playstatechanged");
+        iF.addAction("com.rhapsody.metachanged");
+        iF.addAction("com.rhapsody.queuechanged");
         //PowerAmp
         iF.addAction("com.maxmpz.audioplayer.playstatechanged");
+        iF.addAction("com.maxmpz.audioplayer.metachanged");
+        iF.addAction("com.maxmpz.audioplayer.queuechanged");
         //will be added any....
         //scrobblers detect for players (poweramp for example)
         //Last.fm
         iF.addAction("fm.last.android.metachanged");
         iF.addAction("fm.last.android.playbackpaused");
         iF.addAction("fm.last.android.playbackcomplete");
+        iF.addAction("fm.last.android.queuechanged");
         //A simple last.fm scrobbler
         iF.addAction("com.adam.aslfms.notify.playstatechanged");
+        iF.addAction("com.adam.aslfms.notify.queuechanged");
         // Others
         iF.addAction("net.jjc1138.android.scrobbler.action.MUSIC_STATUS");
         iF.addAction("com.andrew.apollo.metachanged");
@@ -110,8 +116,47 @@ public class MyService extends Service {
         iF.addAction("com.real.IMP.metachanged");
 
         iF.addAction("com.spotify.music.playbackstatechanged");
-            iF.addAction("com.spotify.music.metadatachanged");
+        iF.addAction("com.spotify.music.metadatachanged");
         iF.addAction("com.spotify.music.queuechanged");
+
+       iF.addAction("com.jrtstudio.music.metachanged");
+       iF.addAction("com.jrtstudio.music.playstatechanged");
+       iF.addAction("com.jrtstudio.music.playbackcomplete");
+       iF.addAction("com.jrtstudio.music.queuechanged");
+
+        iF.addAction("com.android.mediacenter.playstatechanged");
+        iF.addAction("com.android.mediacenter.playbackcomplete");
+        iF.addAction("com.android.mediacenter.queuechanged");
+        iF.addAction("com.android.mediacenter.metachanged");
+
+        iF.addAction("com.jetappfactory.jetaudio.playstatechanged");
+        iF.addAction("com.jetappfactory.jetaudio.metachanged");
+        iF.addAction("com.jetappfactory.jetaudio.playbackcomplete");
+        iF.addAction("com.jetappfactory.jetaudio.queuechanged");
+        iF.addAction("com.jetappfactory.jetaudioplus.playstatechanged");
+        iF.addAction("com.jetappfactory.jetaudioplus.metachanged");
+        iF.addAction("com.jetappfactory.jetaudioplus.playbackcomplete");
+        iF.addAction("com.jetappfactory.jetaudioplus.queuechanged");
+
+        iF.addAction("com.e8tracks.playstatechanged");
+        iF.addAction("com.e8tracks.playbackcomplete");
+        iF.addAction("com.e8tracks.metachanged");
+        iF.addAction("com.e8tracks.queuechanged");
+
+        iF.addAction("com.doubleTwist.androidPlayer.metachanged");
+        iF.addAction("com.doubleTwist.androidPlayer.playstatechanged");
+        iF.addAction("com.doubleTwist.androidPlayer.playbackcomplete");
+        iF.addAction("com.doubleTwist.androidPlayer.queuechanged");
+
+        iF.addAction("com.tbig.playerpro.playstatechanged");
+        iF.addAction("com.tbig.playerpro.playbackcomplete");
+        iF.addAction("com.tbig.playerpro.metachanged");
+        iF.addAction("com.tbig.playerpro.queuechanged");
+        iF.addAction("com.tbig.playerpro.playstatechanged");
+        iF.addAction("com.tbig.playerpro.metachanged");
+        iF.addAction("com.tbig.playerpro.playbackcomplete");
+        iF.addAction("com.tbig.playerpro.queuechanged");
+
 
 
         if(isNetworkAvailable(getBaseContext())) {
@@ -119,8 +164,7 @@ public class MyService extends Service {
         } else{
             Toast.makeText(getBaseContext(),"Sorry, check your Internet connection and restart the app!", Toast.LENGTH_LONG).show();
         }
-//        return super.onStartCommand(intent, flags, startId);
-        return START_STICKY;
+        return START_STICKY_COMPATIBILITY;
     }
 
     @Override

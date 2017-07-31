@@ -12,6 +12,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,7 +58,6 @@ public class AllTracksFragment extends Fragment {
 
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, RCODE);
-
         } else {
             getMusic();
         }
@@ -69,6 +69,7 @@ public class AllTracksFragment extends Fragment {
 
         if (requestCode == RCODE) {
             if (permissions[0].equals(Manifest.permission.READ_EXTERNAL_STORAGE) && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Log.d("TAG", "onRequestPermissionsResult: granted");
                 getMusic();
             } else if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
                 Toast.makeText(getContext(), "Sorry, permission to access your music files has been denied", Toast.LENGTH_SHORT).show();
@@ -79,6 +80,7 @@ public class AllTracksFragment extends Fragment {
     }
 
     public void getMusic() {
+        Log.d("TAG", "getMusic: inside ");
         ContentResolver musicResolver = getContext().getContentResolver();
         Uri musicUri = android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         Cursor musicCursor = musicResolver.query(musicUri, null, null, null, null);
