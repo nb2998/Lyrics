@@ -138,6 +138,9 @@ public class MainActivity extends AppCompatActivity{
             if(position==0){
                 return new SearchFragment();
             }
+            // TODO: Add a empty fragment that jsut says that yu havent given the permissoin so no songs are being displayed here
+            // TODO: and then give that fragmnt the number two spot or this will only show 2 tabs
+
             else if(position==1){
                 return new SettingsFragment();
             }
