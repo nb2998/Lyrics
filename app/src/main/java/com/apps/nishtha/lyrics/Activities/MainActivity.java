@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.apps.nishtha.lyrics.Fragments.AllTracksFragment;
+import com.apps.nishtha.lyrics.Fragments.BlankFragment;
 import com.apps.nishtha.lyrics.Fragments.SearchFragment;
 import com.apps.nishtha.lyrics.Fragments.SettingsFragment;
 import com.apps.nishtha.lyrics.R;
@@ -27,6 +28,7 @@ import com.google.android.gms.ads.MobileAds;
 public class MainActivity extends AppCompatActivity{
 
     public static int COUNT=3;
+    public static int RCODE=100;
     public static boolean permissongranted=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +39,7 @@ public class MainActivity extends AppCompatActivity{
 
 
         if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 100);
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, RCODE);
         } else {
             setViewPager();
             permissongranted=true;
@@ -98,11 +100,7 @@ public class MainActivity extends AppCompatActivity{
             if(position==0){
                 return new SearchFragment();
             }
-            else if(position==1 && permissongranted){
-
-                return new AllTracksFragment();
-            }
-            else if(position ==1 && !permissongranted){
+            else if(position==1 ){
                 return new AllTracksFragment();
             }
             else if(position==2){
@@ -124,9 +122,11 @@ public class MainActivity extends AppCompatActivity{
         public CharSequence getPageTitle(int position) {
             if(position==0){
                 return "Search";
-            }else if(position==1){
-                return "Settings";  }
-            return null;
+            }else if(position==1) {
+                return "All Tracks";
+            } else{
+                return "Settings";
+            }
         }
 
         public ViewPagerAdapterSecond(FragmentManager fm) {
@@ -138,10 +138,12 @@ public class MainActivity extends AppCompatActivity{
             if(position==0){
                 return new SearchFragment();
             }
-            // TODO: Add a empty fragment that jsut says that yu havent given the permissoin so no songs are being displayed here
-            // TODO: and then give that fragmnt the number two spot or this will only show 2 tabs
 
             else if(position==1){
+                return new BlankFragment();
+            }
+
+            else if(position==2){
                 return new SettingsFragment();
             }
             return null;
@@ -156,7 +158,7 @@ public class MainActivity extends AppCompatActivity{
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
-        if (requestCode == 100) {
+        if (requestCode == RCODE) {
             if (permissions[0].equals(Manifest.permission.READ_EXTERNAL_STORAGE) && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Log.d("TAG", "onRequestPermissionsResult: granted");
                 permissongranted=true;
@@ -164,12 +166,12 @@ public class MainActivity extends AppCompatActivity{
             } else if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
                 permissongranted=false;
                 Toast.makeText(MainActivity.this, "Sorry, permission to access your music files has been denied", Toast.LENGTH_SHORT).show();
-                COUNT=2;
                 ViewPager viewPager= (ViewPager) findViewById(R.id.viewPager);
                 viewPager.setAdapter(new ViewPagerAdapterSecond(getSupportFragmentManager()));
                 TabLayout tabLayout= (TabLayout) findViewById(R.id.tabLayout);
                 tabLayout.setupWithViewPager(viewPager);
             }
+
         }
 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);

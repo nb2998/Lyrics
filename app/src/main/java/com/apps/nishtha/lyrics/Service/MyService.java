@@ -158,7 +158,6 @@ public class MyService extends Service {
         iF.addAction("com.tbig.playerpro.queuechanged");
 
 
-
         if(isNetworkAvailable(getBaseContext())) {
             registerReceiver(musicReceiver, iF);
         } else{
@@ -169,7 +168,6 @@ public class MyService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        // TODO: Return the communication channel to the service.
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
