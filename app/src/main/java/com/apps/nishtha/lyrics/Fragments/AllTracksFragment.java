@@ -1,14 +1,10 @@
 package com.apps.nishtha.lyrics.Fragments;
 
 
-import android.Manifest;
 import android.content.ContentResolver;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.apps.nishtha.lyrics.Adapter.TrackAdapter;
 import com.apps.nishtha.lyrics.PojoForId.Track;
@@ -56,27 +51,8 @@ public class AllTracksFragment extends Fragment {
         trackAdapter = new TrackAdapter(getContext(), trackArrayList);
         recViewForTracksInStorage.setAdapter(trackAdapter);
 
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, RCODE);
-        } else {
             getMusic();
-        }
         return view;
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-
-        if (requestCode == RCODE) {
-            if (permissions[0].equals(Manifest.permission.READ_EXTERNAL_STORAGE) && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Log.d("TAG", "onRequestPermissionsResult: granted");
-                getMusic();
-            } else if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
-                Toast.makeText(getContext(), "Sorry, permission to access your music files has been denied", Toast.LENGTH_SHORT).show();
-            }
-        }
-
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     public void getMusic() {
