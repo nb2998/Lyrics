@@ -1,16 +1,22 @@
 package com.apps.nishtha.lyrics.Activities;
 
+import android.Manifest;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.apps.nishtha.lyrics.Fragments.AllTracksFragment;
 import com.apps.nishtha.lyrics.Fragments.SearchFragment;
@@ -18,9 +24,10 @@ import com.apps.nishtha.lyrics.Fragments.SettingsFragment;
 import com.apps.nishtha.lyrics.R;
 import com.google.android.gms.ads.MobileAds;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
-    public static final int COUNT=3;
+    public static int COUNT=3;
+    public static boolean permissongranted=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,10 +35,13 @@ public class MainActivity extends AppCompatActivity {
 
         MobileAds.initialize(this,"ca-app-pub-7007784112686547~1172626234");
 
-        ViewPager viewPager= (ViewPager) findViewById(R.id.viewPager);
-        viewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager()));
-        TabLayout tabLayout= (TabLayout) findViewById(R.id.tabLayout);
-        tabLayout.setupWithViewPager(viewPager);
+
+        if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 100);
+        } else {
+            setViewPager();
+            permissongranted=true;
+        }
 
     }
 
@@ -66,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
     private class ViewPagerAdapter extends FragmentPagerAdapter{
 
+
         @Override
         public CharSequence getPageTitle(int position) {
             if(position==0){
@@ -87,7 +98,11 @@ public class MainActivity extends AppCompatActivity {
             if(position==0){
                 return new SearchFragment();
             }
-            else if(position==1){
+            else if(position==1 && permissongranted){
+
+                return new AllTracksFragment();
+            }
+            else if(position ==1 && !permissongranted){
                 return new AllTracksFragment();
             }
             else if(position==2){
@@ -102,5 +117,69 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private class ViewPagerAdapterSecond extends FragmentPagerAdapter{
+
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            if(position==0){
+                return "Search";
+            }else if(position==1){
+                return "Settings";  }
+            return null;
+        }
+
+        public ViewPagerAdapterSecond(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            if(position==0){
+                return new SearchFragment();
+            }
+            // TODO: Add a empty fragment that jsut says that yu havent given the permissoin so no songs are being displayed here
+            // TODO: and then give that fragmnt the number two spot or this will only show 2 tabs
+
+            else if(position==1){
+                return new SettingsFragment();
+            }
+            return null;
+        }
+
+        @Override
+        public int getCount() {
+            return COUNT;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        if (requestCode == 100) {
+            if (permissions[0].equals(Manifest.permission.READ_EXTERNAL_STORAGE) && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Log.d("TAG", "onRequestPermissionsResult: granted");
+                permissongranted=true;
+                setViewPager();
+            } else if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                permissongranted=false;
+                Toast.makeText(MainActivity.this, "Sorry, permission to access your music files has been denied", Toast.LENGTH_SHORT).show();
+                COUNT=2;
+                ViewPager viewPager= (ViewPager) findViewById(R.id.viewPager);
+                viewPager.setAdapter(new ViewPagerAdapterSecond(getSupportFragmentManager()));
+                TabLayout tabLayout= (TabLayout) findViewById(R.id.tabLayout);
+                tabLayout.setupWithViewPager(viewPager);
+            }
+        }
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    public void setViewPager(){
+        ViewPager viewPager= (ViewPager) findViewById(R.id.viewPager);
+        viewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager()));
+        TabLayout tabLayout= (TabLayout) findViewById(R.id.tabLayout);
+        tabLayout.setupWithViewPager(viewPager);
+    }
 
 }
