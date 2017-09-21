@@ -119,7 +119,9 @@ public class AllTracksFragment extends Fragment {
                         }
                     }
                 }
-                trackArrayList.add(new Track(trackName.toString(), artistName.toString(), ""));
+                //Excluded songs starting with AUD(whatsapp)
+                if(!trackName.toString().equals("AUD"))
+                    trackArrayList.add(new Track(trackName.toString(), artistName.toString(), ""));
                 trackAdapter.notifyDataSetChanged();
             }
             while (musicCursor.moveToNext());

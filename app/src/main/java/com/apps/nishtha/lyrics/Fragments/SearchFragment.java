@@ -85,8 +85,6 @@ public class SearchFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         getTrackId();
-                        trackArrayList.add(new Track(trackName.toString(),artistName.toString(),""));
-                        trackAdapter.notifyDataSetChanged();
                         dialog.dismiss();
                         trackNameEt.setText("");
                         artistNameEt.setText("");

@@ -3,6 +3,7 @@ package com.apps.nishtha.lyrics.Activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -33,5 +34,9 @@ public class DisplayLyricsActivity extends AppCompatActivity {
         title.setText(i.getStringExtra("songName"));
         textView.setText(lyrics);
 
+    }
+
+    public void exit(View view) {
+        finish();
     }
 }
