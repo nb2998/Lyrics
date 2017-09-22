@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.apps.nishtha.lyrics.Activities.DisplayLyricsActivity;
 import com.apps.nishtha.lyrics.PojoForId.Details;
@@ -133,6 +134,14 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder>
             okHttpClient.newCall(request1).enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
+                    android.os.Handler handler=new android.os.Handler(Looper.getMainLooper());
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressDialog.hide();
+                        }
+                    });
+                    Toast.makeText(context, "Sorry, request failed. Try again later!",Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -178,6 +187,13 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder>
             });
 
         } else {
+            android.os.Handler handler=new android.os.Handler(Looper.getMainLooper());
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    progressDialog.hide();
+                }
+            });
             Intent displayIntent = new Intent(context, DisplayLyricsActivity.class);
             displayIntent.putExtra("lyrics", "Sorry! Song name or artist name seems to be incorrect!");
             displayIntent.putExtra("songName", "Unavailable");
