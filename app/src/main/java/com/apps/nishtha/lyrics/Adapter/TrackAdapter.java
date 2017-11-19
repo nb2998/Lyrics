@@ -3,9 +3,11 @@ package com.apps.nishtha.lyrics.Adapter;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,11 +42,13 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder>
     String trackName, artistName;
     String baseUrl = "http://api.musixmatch.com/ws/1.1/track.search?apikey=0e3945b8ba5f77f377843ec4b2539360";
     ProgressDialog progressDialog;
+    android.os.Handler handler;
 
     public TrackAdapter(Context context, ArrayList<Track> trackArrayList) {
         this.context = context;
         this.trackArrayList = trackArrayList;
         okHttpClient = new OkHttpClient();
+        handler=new Handler(Looper.getMainLooper());
     }
 
     @Override
@@ -67,7 +71,13 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder>
                 progressDialog=new ProgressDialog(context);
                 progressDialog.setMessage("Loading..");
                 progressDialog.setCanceledOnTouchOutside(false);
-                progressDialog.show();
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressDialog.show();
+                    }
+                });
+
                 getTrackId(trackName, artistName);
             }
         });
@@ -134,11 +144,10 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder>
             okHttpClient.newCall(request1).enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
-                    android.os.Handler handler=new android.os.Handler(Looper.getMainLooper());
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            progressDialog.hide();
+                            progressDialog.dismiss();
                         }
                     });
                     Toast.makeText(context, "Sorry, request failed. Try again later!",Toast.LENGTH_SHORT).show();
@@ -149,15 +158,16 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder>
                     String result = response.body().string();
                     Gson gson = new Gson();
 
-                    android.os.Handler handler=new android.os.Handler(Looper.getMainLooper());
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            progressDialog.hide();
+                            Log.d("TAG", "run: progress dialog should hide");
+                            progressDialog.dismiss();
                         }
                     });
 
                     try {
+                        Log.d("TAG", "onResponse: display lyrics");
                         LyricsDetails lyricsDetails = gson.fromJson(result, LyricsDetails.class);
 
                         if (lyricsDetails != null && lyricsDetails.getMessageLyrics() != null && lyricsDetails.getMessageLyrics().getBodyLyrics() != null && lyricsDetails.getMessageLyrics().getBodyLyrics().getLyrics() != null && lyricsDetails.getMessageLyrics().getBodyLyrics().getLyrics().getLyrics_body() != null) {
@@ -187,11 +197,10 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder>
             });
 
         } else {
-            android.os.Handler handler=new android.os.Handler(Looper.getMainLooper());
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    progressDialog.hide();
+                    progressDialog.dismiss();
                 }
             });
             Intent displayIntent = new Intent(context, DisplayLyricsActivity.class);
