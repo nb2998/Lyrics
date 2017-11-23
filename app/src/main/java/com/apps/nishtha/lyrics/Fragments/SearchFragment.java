@@ -1,9 +1,12 @@
 package com.apps.nishtha.lyrics.Fragments;
 
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -50,7 +53,7 @@ public class SearchFragment extends Fragment {
     ArrayList<Track> trackArrayList=new ArrayList<>();
     ArrayList<String> trackIdArrayList=new ArrayList<>();
     TrackAdapter trackAdapter;
-
+    View v;
     AdView adView;
 
     public SearchFragment() {
@@ -60,8 +63,8 @@ public class SearchFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v=inflater.inflate(R.layout.search_fragment,container,false);
 
+        v = inflater.inflate(R.layout.search_fragment,container,false);
         okHttpClient=new OkHttpClient();
         tvInvisible= (TextView) v.findViewById(R.id.tvInvisible);
         recView= (RecyclerView) v.findViewById(R.id.recView);
@@ -84,7 +87,18 @@ public class SearchFragment extends Fragment {
                 .setPositiveButton("Search", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        getTrackId();
+                        if(isNetworkAvailable(getContext())) {
+                            getTrackId();
+                        } else{
+                            final Snackbar snackbar=Snackbar.make(v,R.string.sorry_internet_connection,Snackbar.LENGTH_LONG);
+                            snackbar.setAction("Ok", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    snackbar.dismiss();
+                                }
+                            })
+                                    .show();
+                        }
                         dialog.dismiss();
                         trackNameEt.setText("");
                         artistNameEt.setText("");
@@ -205,5 +219,9 @@ public class SearchFragment extends Fragment {
                 }
             }
         });
+    }
+    public boolean isNetworkAvailable(final Context context) {
+        final ConnectivityManager connectivityManager = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
+        return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
     }
 }

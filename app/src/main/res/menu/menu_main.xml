@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/favMenu"
+        android:title="@string/menu_fav"
+        app:showAsAction="ifRoom"
+        android:icon="@android:drawable/btn_star_big_off" />
+
+    <item
         android:id="@+id/infoMenu"
         android:title="Info"
         app:showAsAction="collapseActionView"

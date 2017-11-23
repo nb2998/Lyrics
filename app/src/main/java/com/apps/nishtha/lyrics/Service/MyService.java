@@ -9,6 +9,7 @@ import android.net.ConnectivityManager;
 import android.os.IBinder;
 import android.widget.Toast;
 
+import com.apps.nishtha.lyrics.R;
 import com.apps.nishtha.lyrics.Receiver.MusicReceiver;
 
 public class MyService extends Service {
@@ -158,11 +159,9 @@ public class MyService extends Service {
         iF.addAction("com.tbig.playerpro.queuechanged");
 
 
-        if(isNetworkAvailable(getBaseContext())) {
-            registerReceiver(musicReceiver, iF);
-        } else{
-            Toast.makeText(getBaseContext(),"Sorry, check your Internet connection and restart the app!", Toast.LENGTH_LONG).show();
-        }
+        if(isNetworkAvailable(getBaseContext())) registerReceiver(musicReceiver, iF);
+        else
+            Toast.makeText(getBaseContext(), R.string.enable_internet, Toast.LENGTH_LONG).show();
         return START_STICKY_COMPATIBILITY;
     }
 

@@ -3,8 +3,10 @@ package com.apps.nishtha.lyrics.Adapter;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -43,6 +45,7 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder>
     String baseUrl = "http://api.musixmatch.com/ws/1.1/track.search?apikey=0e3945b8ba5f77f377843ec4b2539360";
     ProgressDialog progressDialog;
     android.os.Handler handler;
+    View view;
 
     public TrackAdapter(Context context, ArrayList<Track> trackArrayList) {
         this.context = context;
@@ -53,7 +56,7 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder>
 
     @Override
     public TrackHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = (LayoutInflater.from(context)).inflate(R.layout.single_track, parent, false);
+        view = (LayoutInflater.from(context)).inflate(R.layout.single_track, parent, false);
         TrackHolder trackHolder = new TrackHolder(view);
         return trackHolder;
     }
@@ -66,19 +69,30 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder>
         holder.trackCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                trackName = track.getTrack_name();
-                artistName = track.getArtist_name();
-                progressDialog=new ProgressDialog(context);
-                progressDialog.setMessage("Loading..");
-                progressDialog.setCanceledOnTouchOutside(false);
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        progressDialog.show();
-                    }
-                });
+                if(isNetworkAvailable(context)) {
+                    trackName = track.getTrack_name();
+                    artistName = track.getArtist_name();
+                    progressDialog = new ProgressDialog(context);
+                    progressDialog.setMessage("Loading..");
+                    progressDialog.setCanceledOnTouchOutside(false);
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressDialog.show();
+                        }
+                    });
 
-                getTrackId(trackName, artistName);
+                    getTrackId(trackName, artistName);
+                } else{
+                    final Snackbar snackbar=Snackbar.make(view,R.string.sorry_internet_connection,Snackbar.LENGTH_LONG);
+                    snackbar.setAction("Ok", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    snackbar.dismiss();
+                                }
+                            })
+                            .show();
+                }
             }
         });
     }
@@ -212,5 +226,9 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder>
 
             context.startActivity(displayIntent);
         }
+    }
+    public boolean isNetworkAvailable(final Context context) {
+        final ConnectivityManager connectivityManager = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
+        return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
     }
 }

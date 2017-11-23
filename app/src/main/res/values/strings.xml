@@ -4,6 +4,9 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="api_key">0e3945b8ba5f77f377843ec4b2539360</string>
+    <string name="menu_fav">Favourites</string>
+    <string name="sorry_internet_connection">Sorry, check your Internet connection and try again!</string>
+    <string name="enable_internet">Enable internet connection and restart the app for better experience!</string>
 </resources>
 
 

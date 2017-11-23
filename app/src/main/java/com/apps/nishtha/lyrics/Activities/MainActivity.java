@@ -2,6 +2,7 @@ package com.apps.nishtha.lyrics.Activities;
 
 import android.Manifest;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -44,7 +45,6 @@ public class MainActivity extends AppCompatActivity{
             setViewPager();
             permissongranted=true;
         }
-
     }
 
     @Override
@@ -66,6 +66,10 @@ public class MainActivity extends AppCompatActivity{
                         }
                     })
                     .show();
+        }
+        if(item.getItemId()==R.id.favMenu){
+            Intent intent=new Intent(MainActivity.this, FavouritesActivity.class);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }

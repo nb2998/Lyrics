@@ -104,7 +104,7 @@ public class MusicReceiver extends BroadcastReceiver {
         Notification notification = new NotificationCompat.Builder(c)
                 .setContentTitle("Lyrics unavailable")
                 .setContentText("Sorry!")
-                .setSmallIcon(R.mipmap.music)
+                .setSmallIcon(R.mipmap.ic_launcher)
                 .setAutoCancel(true)
                 .build();
 
@@ -149,7 +149,7 @@ public class MusicReceiver extends BroadcastReceiver {
                                                           Notification notification = new NotificationCompat.Builder(c)
                                                                   .setContentTitle("Sorry!")
                                                                   .setContentText("Invalid request!")
-                                                                  .setSmallIcon(R.mipmap.music)
+                                                                  .setSmallIcon(R.mipmap.ic_launcher)
                                                                   .setAutoCancel(true)
                                                                   .build();
                                                           ((NotificationManager) (c.getSystemService(NOTIFICATION_SERVICE))).notify(1, notification);
@@ -195,7 +195,7 @@ public class MusicReceiver extends BroadcastReceiver {
                             Notification notification = new NotificationCompat.Builder(c)
                                     .setContentTitle("Want to know the lyrics?")
                                     .setContentText("Current song : " + trackName)
-                                    .setSmallIcon(R.mipmap.music)
+                                    .setSmallIcon(R.mipmap.ic_launcher)
                                     .setAutoCancel(true)
                                     .setContentIntent(PendingIntent.getActivity(c, 123, displayIntent, PendingIntent.FLAG_UPDATE_CURRENT))
                                     .build();
@@ -206,7 +206,7 @@ public class MusicReceiver extends BroadcastReceiver {
                         Notification notification = new NotificationCompat.Builder(c)
                                 .setContentTitle("Sorry!")
                                 .setContentText("Lyrics Unavailable for the song")
-                                .setSmallIcon(R.mipmap.music)
+                                .setSmallIcon(R.mipmap.ic_launcher)
                                 .setAutoCancel(true)
                                 .build();
                         ((NotificationManager) (c.getSystemService(NOTIFICATION_SERVICE))).notify(1, notification);
@@ -219,7 +219,7 @@ public class MusicReceiver extends BroadcastReceiver {
             Notification notification = new NotificationCompat.Builder(c)
                     .setContentTitle("Lyrics unavailable")
                     .setContentText("Sorry! The song seems to be pirated")
-                    .setSmallIcon(R.mipmap.music)
+                    .setSmallIcon(R.mipmap.ic_launcher)
                     .setAutoCancel(true)
                     .build();
 
