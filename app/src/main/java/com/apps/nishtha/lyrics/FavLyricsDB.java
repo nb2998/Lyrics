@@ -12,6 +12,7 @@ import com.apps.nishtha.lyrics.Model.FavModel;
 
 import java.util.ArrayList;
 
+import static com.apps.nishtha.lyrics.DBContract.COLUMN_ARTIST;
 import static com.apps.nishtha.lyrics.DBContract.COLUMN_ID;
 import static com.apps.nishtha.lyrics.DBContract.COLUMN_LYRICS;
 import static com.apps.nishtha.lyrics.DBContract.COLUMN_NAME;
@@ -39,7 +40,7 @@ public class FavLyricsDB extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_TABLE=CREATE + TABLE_NAME + LBR +
-                COLUMN_ID + INT_PK_AUTOIC +COMMA + COLUMN_NAME + TYPE_TEXT + COMMA + COLUMN_LYRICS + TYPE_TEXT + RBR + TERMINATE;
+                COLUMN_ID + INT_PK_AUTOIC +COMMA + COLUMN_NAME + TYPE_TEXT + COMMA + COLUMN_ARTIST + TYPE_TEXT + COMMA + COLUMN_LYRICS + TYPE_TEXT + RBR + TERMINATE;
         Log.d("TAG", "onCreate: "+CREATE_TABLE);
         db.execSQL(CREATE_TABLE);
 
@@ -55,6 +56,7 @@ public class FavLyricsDB extends SQLiteOpenHelper {
         ContentValues cv=new ContentValues();
         cv.put(COLUMN_LYRICS, song.getLyrics());
         cv.put(COLUMN_NAME, song.getTitle());
+        cv.put(COLUMN_ARTIST, song.getArtist());
 //        Log.d("TAG", "insertInFav: TITLE"+song.getTitle());
 //        Log.d("TAG", "insertInFav: TITLE"+cv.get("title"));
         sqldb.insert(TABLE_NAME,null,cv);
@@ -70,11 +72,13 @@ public class FavLyricsDB extends SQLiteOpenHelper {
 //            Log.d("TAG", "getAllFavSongs: "+c.getString(c.getColumnIndex(COLUMN_LYRICS)));
 //            Log.d("TAG", "getAllFavSongs: "+c.getString(c.getColumnIndex(COLUMN_NAME)));
             favModelArrayList.add(new FavModel(c.getString(c.getColumnIndex(COLUMN_LYRICS))
-                    , c.getString(c.getColumnIndex(COLUMN_NAME))));
+                    , c.getString(c.getColumnIndex(COLUMN_NAME))
+                    , c.getString(c.getColumnIndex(COLUMN_ARTIST))));
         }
         return favModelArrayList;
     }
 
+    // TODO: 28/11/17 Make db read async
     private class ReadFromDbAsyncTask extends AsyncTask<Cursor,Void,ArrayList<FavModel>>{
         ArrayList<FavModel> favModelArrayList;
 

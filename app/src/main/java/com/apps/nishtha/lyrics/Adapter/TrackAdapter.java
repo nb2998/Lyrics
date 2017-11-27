@@ -187,25 +187,11 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder>
                         if (lyricsDetails != null && lyricsDetails.getMessageLyrics() != null && lyricsDetails.getMessageLyrics().getBodyLyrics() != null && lyricsDetails.getMessageLyrics().getBodyLyrics().getLyrics() != null && lyricsDetails.getMessageLyrics().getBodyLyrics().getLyrics().getLyrics_body() != null) {
                             lyrics = lyricsDetails.getMessageLyrics().getBodyLyrics().getLyrics().getLyrics_body();
 
-                            Intent displayIntent = new Intent(context, DisplayLyricsActivity.class);
-                            displayIntent.putExtra("lyrics", lyrics);
-                            displayIntent.putExtra("songName", trackName.toString());
-                            displayIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            displayIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            displayIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-
-                            context.startActivity(displayIntent);
+                            fireIntentForDisplayLyricsActivity(lyrics,trackName,artistName);
 
                         }
                     } catch (Exception e) {
-                        Intent displayIntent = new Intent(context, DisplayLyricsActivity.class);
-                        displayIntent.putExtra("lyrics", "Sorry! Lyrics Unavailable for the song");
-                        displayIntent.putExtra("songName", "Unavailable");
-                        displayIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        displayIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        displayIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-
-                        context.startActivity(displayIntent);
+                        fireIntentForDisplayLyricsActivity(context.getString(R.string.lyrics_unavailable),context.getString(R.string.unavailable),"");
                     }
                 }
             });
@@ -217,18 +203,23 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder>
                     progressDialog.dismiss();
                 }
             });
-            Intent displayIntent = new Intent(context, DisplayLyricsActivity.class);
-            displayIntent.putExtra("lyrics", "Sorry! Song name or artist name seems to be incorrect!");
-            displayIntent.putExtra("songName", "Unavailable");
-            displayIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            displayIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            displayIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-
-            context.startActivity(displayIntent);
+            fireIntentForDisplayLyricsActivity(context.getString(R.string.incorrect_song_name), context.getString(R.string.unavailable),"");
         }
     }
     public boolean isNetworkAvailable(final Context context) {
         final ConnectivityManager connectivityManager = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
         return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
+    }
+    
+    void fireIntentForDisplayLyricsActivity(String lyrics, String trackName, String artistName){
+        Intent displayIntent = new Intent(context, DisplayLyricsActivity.class);
+        displayIntent.putExtra(context.getString(R.string.lyrics), lyrics);
+        displayIntent.putExtra(context.getString(R.string.songName), trackName);
+        displayIntent.putExtra(context.getString(R.string.artistName), artistName);
+        displayIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        displayIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        displayIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+
+        context.startActivity(displayIntent);
     }
 }

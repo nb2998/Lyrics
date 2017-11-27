@@ -8,6 +8,12 @@
     <string name="sorry_internet_connection">Sorry, check your Internet connection and try again!</string>
     <string name="enable_internet">Enable internet connection and restart the app for better experience!</string>
     <string name="click_on_the_track_to_read_lyrics">CLick on the track to read lyrics.</string>
+    <string name="lyrics_unavailable">Sorry! Lyrics Unavailable for the song</string>
+    <string name="unavailable">Unavailable</string>
+    <string name="incorrect_song_name">Sorry! Song name or artist name seems to be incorrect!</string>
+    <string name="lyrics">lyrics</string>
+    <string name="songName">songName</string>
+    <string name="artistName">artistName</string>
 </resources>
 
 

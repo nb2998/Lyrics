@@ -21,7 +21,7 @@ public class DisplayLyricsActivity extends AppCompatActivity implements View.OnC
     TextView tvLyrics, tvTitle;
     AdView adView1;
     FloatingActionButton fabAddToFav;
-    String lyrics,title;
+    String lyrics,title,artist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +39,12 @@ public class DisplayLyricsActivity extends AppCompatActivity implements View.OnC
         adView1.loadAd(adRequest);
 
         Intent i=getIntent();
-        lyrics = i.getStringExtra("lyrics");
-        title=i.getStringExtra("songName");
+        lyrics = i.getStringExtra(getString(R.string.lyrics));
+        title=i.getStringExtra(getString(R.string.songName));
         setTitle(title);
-        tvTitle.setText(i.getStringExtra("songName"));
+        tvTitle.setText(getString(R.string.songName));
         tvLyrics.setText(lyrics);
-
+        artist=i.getStringExtra(getString(R.string.artistName));
     }
 
     public void exit(View view) {
@@ -55,7 +55,7 @@ public class DisplayLyricsActivity extends AppCompatActivity implements View.OnC
     public void onClick(View v) {
         if(v.getId()==R.id.fabAddToFav){
             FavLyricsDB favLyricsDB=new FavLyricsDB(DisplayLyricsActivity.this);
-            favLyricsDB.insertInFav(new FavModel(lyrics, title));
+            favLyricsDB.insertInFav(new FavModel(lyrics, title,artist));
             Log.d("TAG", "onClick: TITLE"+title);
             Toast.makeText(DisplayLyricsActivity.this,"Added to favourites", Toast.LENGTH_SHORT).show();
         }

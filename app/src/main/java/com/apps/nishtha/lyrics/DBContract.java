@@ -9,6 +9,7 @@ public interface DBContract {
     String COLUMN_LYRICS="lyrics";
     String COLUMN_NAME="title";
     String COLUMN_ID="id";
+    String COLUMN_ARTIST="artist";
 
     String CREATE=" CREATE TABLE ";  //leave spaces
     String COMMA=" , ";

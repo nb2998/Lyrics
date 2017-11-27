@@ -28,27 +28,25 @@ public class FavAdapter extends RecyclerView.Adapter<FavAdapter.FavHolder> {
 
     @Override
     public FavHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new FavHolder(LayoutInflater.from(context).inflate(R.layout.single_row_fav,parent,false));
+        return new FavHolder(LayoutInflater.from(context).inflate(R.layout.single_row_fav, parent, false));
     }
 
     @Override
     public void onBindViewHolder(final FavHolder holder, int position) {
         final boolean[] selectedOnce = {true};
-        final FavModel favModel=favModelArrayList.get(position);
+        final FavModel favModel = favModelArrayList.get(position);
         holder.nameTvFav.setText(favModel.getTitle());
-        holder.artistTvFav.setText("Artist");
+        holder.artistTvFav.setText(favModel.getArtist());
         holder.trackCardViewFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: 23/11/17 display and hide lyrics on clicking
                 holder.lyricsTvFav.setText(favModel.getLyrics());
-                if(selectedOnce[0]) {
+                if (selectedOnce[0]) {
                     holder.lyricsTvFav.setVisibility(View.VISIBLE);
-                    selectedOnce[0] =false;
-                }else {
-                    // TODO: 23/11/17 Change height of cardview accordingly  
+                    selectedOnce[0] = false;
+                } else {
                     holder.lyricsTvFav.setVisibility(View.GONE);
-                    selectedOnce[0] =true;
+                    selectedOnce[0] = true;
                 }
             }
         });
@@ -59,9 +57,10 @@ public class FavAdapter extends RecyclerView.Adapter<FavAdapter.FavHolder> {
         return favModelArrayList.size();
     }
 
-    class FavHolder extends RecyclerView.ViewHolder{
-        TextView nameTvFav,artistTvFav, lyricsTvFav;
+    class FavHolder extends RecyclerView.ViewHolder {
+        TextView nameTvFav, artistTvFav, lyricsTvFav;
         CardView trackCardViewFav;
+
         public FavHolder(View itemView) {
             super(itemView);
             nameTvFav = (TextView) itemView.findViewById(R.id.nameTvFav);

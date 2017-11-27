@@ -8,6 +8,11 @@ public class FavModel {
     private int id;
     private String lyrics;
     private String title;
+    private String artist;
+
+    public String getArtist() {
+        return artist;
+    }
 
     public String getTitle() {
         return title;
@@ -21,8 +26,9 @@ public class FavModel {
         return lyrics;
     }
 
-    public FavModel(String lyrics, String title) {
+    public FavModel(String lyrics, String title, String artist) {
         this.lyrics = lyrics;
         this.title = title;
+        this.artist=artist;
     }
 }
