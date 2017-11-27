@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.view.MenuItem;
 
 import com.apps.nishtha.lyrics.Adapter.FavAdapter;
 import com.apps.nishtha.lyrics.FavLyricsDB;
@@ -22,13 +22,22 @@ public class FavouritesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favourites);
 
+        if(getSupportActionBar()!=null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
         recViewFav= (RecyclerView) findViewById(R.id.recViewFav);
         recViewFav.setLayoutManager(new LinearLayoutManager(this));
 
         FavLyricsDB favLyricsDB=new FavLyricsDB(this);
         favModelArrayList =favLyricsDB.getAllFavSongs();
         recViewFav.setAdapter(new FavAdapter(this,favModelArrayList));
+    }
 
-        Log.d("TAG", "onCreate: "+favModelArrayList.size());
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId()==android.R.id.home) finish();
+        return super.onOptionsItemSelected(item);
     }
 }

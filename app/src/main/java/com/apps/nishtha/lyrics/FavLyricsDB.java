@@ -55,8 +55,8 @@ public class FavLyricsDB extends SQLiteOpenHelper {
         ContentValues cv=new ContentValues();
         cv.put(COLUMN_LYRICS, song.getLyrics());
         cv.put(COLUMN_NAME, song.getTitle());
-        Log.d("TAG", "insertInFav: TITLE"+song.getTitle());
-        Log.d("TAG", "insertInFav: TITLE"+cv.get("title"));
+//        Log.d("TAG", "insertInFav: TITLE"+song.getTitle());
+//        Log.d("TAG", "insertInFav: TITLE"+cv.get("title"));
         sqldb.insert(TABLE_NAME,null,cv);
     }
 
@@ -67,8 +67,8 @@ public class FavLyricsDB extends SQLiteOpenHelper {
 //        ReadFromDbAsyncTask readFromDbAsyncTask=new ReadFromDbAsyncTask();
 //        readFromDbAsyncTask.execute();
         while(c.moveToNext()) {
-            Log.d("TAG", "getAllFavSongs: "+c.getString(c.getColumnIndex(COLUMN_LYRICS)));
-            Log.d("TAG", "getAllFavSongs: "+c.getString(c.getColumnIndex(COLUMN_NAME)));
+//            Log.d("TAG", "getAllFavSongs: "+c.getString(c.getColumnIndex(COLUMN_LYRICS)));
+//            Log.d("TAG", "getAllFavSongs: "+c.getString(c.getColumnIndex(COLUMN_NAME)));
             favModelArrayList.add(new FavModel(c.getString(c.getColumnIndex(COLUMN_LYRICS))
                     , c.getString(c.getColumnIndex(COLUMN_NAME))));
         }

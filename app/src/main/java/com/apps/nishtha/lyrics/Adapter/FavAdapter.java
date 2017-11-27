@@ -20,7 +20,6 @@ import java.util.ArrayList;
 public class FavAdapter extends RecyclerView.Adapter<FavAdapter.FavHolder> {
     Context context;
     ArrayList<FavModel> favModelArrayList;
-    boolean selectedOnce=true;
 
     public FavAdapter(Context context, ArrayList<FavModel> favModelArrayList) {
         this.context = context;
@@ -34,6 +33,7 @@ public class FavAdapter extends RecyclerView.Adapter<FavAdapter.FavHolder> {
 
     @Override
     public void onBindViewHolder(final FavHolder holder, int position) {
+        final boolean[] selectedOnce = {true};
         final FavModel favModel=favModelArrayList.get(position);
         holder.nameTvFav.setText(favModel.getTitle());
         holder.artistTvFav.setText("Artist");
@@ -42,13 +42,13 @@ public class FavAdapter extends RecyclerView.Adapter<FavAdapter.FavHolder> {
             public void onClick(View v) {
                 // TODO: 23/11/17 display and hide lyrics on clicking
                 holder.lyricsTvFav.setText(favModel.getLyrics());
-                if(selectedOnce) {
+                if(selectedOnce[0]) {
                     holder.lyricsTvFav.setVisibility(View.VISIBLE);
-                    selectedOnce=false;
+                    selectedOnce[0] =false;
                 }else {
                     // TODO: 23/11/17 Change height of cardview accordingly  
-                    holder.lyricsTvFav.setVisibility(View.INVISIBLE);
-                    selectedOnce=true;
+                    holder.lyricsTvFav.setVisibility(View.GONE);
+                    selectedOnce[0] =true;
                 }
             }
         });

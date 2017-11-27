@@ -4,7 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.apps.nishtha.lyrics.Activities.FavouritesActivity">
+    tools:context="com.apps.nishtha.lyrics.Activities.FavouritesActivity"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/click_on_the_track_to_read_lyrics"
+        android:layout_margin="10dp"
+        android:padding="5dp"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textStyle="italic"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recViewFav"
