@@ -14,6 +14,8 @@
     <string name="lyrics">lyrics</string>
     <string name="songName">songName</string>
     <string name="artistName">artistName</string>
+    <string name="added_to_fav">Added to favourites</string>
+    <string name="fav_cannot_add">Sorry! Can\'t be added to favourites</string>
 </resources>
 
 

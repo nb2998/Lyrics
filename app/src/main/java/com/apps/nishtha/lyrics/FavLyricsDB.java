@@ -1,17 +1,5 @@
 package com.apps.nishtha.lyrics;
 
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.os.AsyncTask;
-import android.util.Log;
-
-import com.apps.nishtha.lyrics.Model.FavModel;
-
-import java.util.ArrayList;
-
 import static com.apps.nishtha.lyrics.DBContract.COLUMN_ARTIST;
 import static com.apps.nishtha.lyrics.DBContract.COLUMN_ID;
 import static com.apps.nishtha.lyrics.DBContract.COLUMN_LYRICS;
@@ -24,6 +12,18 @@ import static com.apps.nishtha.lyrics.DBContract.RBR;
 import static com.apps.nishtha.lyrics.DBContract.TABLE_NAME;
 import static com.apps.nishtha.lyrics.DBContract.TERMINATE;
 import static com.apps.nishtha.lyrics.DBContract.TYPE_TEXT;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.os.AsyncTask;
+import android.util.Log;
+
+import com.apps.nishtha.lyrics.Model.FavModel;
+
+import java.util.ArrayList;
 
 /**
  * Created by nishtha on 25/10/17.
@@ -60,6 +60,7 @@ public class FavLyricsDB extends SQLiteOpenHelper {
 //        Log.d("TAG", "insertInFav: TITLE"+song.getTitle());
 //        Log.d("TAG", "insertInFav: TITLE"+cv.get("title"));
         sqldb.insert(TABLE_NAME,null,cv);
+        sqldb.endTransaction();
     }
 
     public ArrayList<FavModel> getAllFavSongs(){
@@ -75,6 +76,7 @@ public class FavLyricsDB extends SQLiteOpenHelper {
                     , c.getString(c.getColumnIndex(COLUMN_NAME))
                     , c.getString(c.getColumnIndex(COLUMN_ARTIST))));
         }
+        c.close();
         return favModelArrayList;
     }
 

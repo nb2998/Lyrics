@@ -3,12 +3,12 @@ package com.apps.nishtha.lyrics.Activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.apps.nishtha.lyrics.FavLyricsDB;
 import com.apps.nishtha.lyrics.Model.FavModel;
@@ -42,7 +42,7 @@ public class DisplayLyricsActivity extends AppCompatActivity implements View.OnC
         lyrics = i.getStringExtra(getString(R.string.lyrics));
         title=i.getStringExtra(getString(R.string.songName));
         setTitle(title);
-        tvTitle.setText(getString(R.string.songName));
+        tvTitle.setText(title);
         tvLyrics.setText(lyrics);
         artist=i.getStringExtra(getString(R.string.artistName));
     }
@@ -53,11 +53,15 @@ public class DisplayLyricsActivity extends AppCompatActivity implements View.OnC
 
     @Override
     public void onClick(View v) {
+        Log.d("TAG", "onClick: "+title+"---- " +lyrics );
         if(v.getId()==R.id.fabAddToFav){
-            FavLyricsDB favLyricsDB=new FavLyricsDB(DisplayLyricsActivity.this);
-            favLyricsDB.insertInFav(new FavModel(lyrics, title,artist));
-            Log.d("TAG", "onClick: TITLE"+title);
-            Toast.makeText(DisplayLyricsActivity.this,"Added to favourites", Toast.LENGTH_SHORT).show();
+            if(!lyrics.equals(getString(R.string.incorrect_song_name))) {
+                FavLyricsDB favLyricsDB = new FavLyricsDB(DisplayLyricsActivity.this);
+                favLyricsDB.insertInFav(new FavModel(lyrics, title, artist));
+                Snackbar.make(v, R.string.added_to_fav, Snackbar.LENGTH_SHORT).show();
+            } else{
+                Snackbar.make(v, R.string.fav_cannot_add, Snackbar.LENGTH_SHORT).show();
+            }
         }
     }
 }

@@ -36,7 +36,7 @@ public class FavAdapter extends RecyclerView.Adapter<FavAdapter.FavHolder> {
         final boolean[] selectedOnce = {true};
         final FavModel favModel = favModelArrayList.get(position);
         holder.nameTvFav.setText(favModel.getTitle());
-        holder.artistTvFav.setText(favModel.getArtist());
+        holder.artistTvFav.setText((favModel.getArtist()!=null)?(favModel.getArtist()):("-"));
         holder.trackCardViewFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,6 +50,7 @@ public class FavAdapter extends RecyclerView.Adapter<FavAdapter.FavHolder> {
                 }
             }
         });
+        // TODO: 22/1/18 Delete from fav
     }
 
     @Override
