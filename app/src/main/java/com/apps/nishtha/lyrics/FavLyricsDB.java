@@ -60,7 +60,6 @@ public class FavLyricsDB extends SQLiteOpenHelper {
 //        Log.d("TAG", "insertInFav: TITLE"+song.getTitle());
 //        Log.d("TAG", "insertInFav: TITLE"+cv.get("title"));
         sqldb.insert(TABLE_NAME,null,cv);
-        sqldb.endTransaction();
     }
 
     public ArrayList<FavModel> getAllFavSongs(){

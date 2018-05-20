@@ -1,4 +1,4 @@
-# Lyrics   [![forthebadge](http://forthebadge.com/badges/built-with-love.svg)](http://forthebadge.com)  [![forthebadge](http://forthebadge.com/badges/built-with-swag.svg)](http://forthebadge.com)
+# Lyrics   [![forthebadge](http://forthebadge.com/badges/built-with-love.svg)](http://forthebadge.com)  [![forthebadge](https://forthebadge.com/images/badges/built-with-swag.svg)](https://forthebadge.com)
 
 The application aims at making the process of searching lyrics of any song a bit simpler by giving user a notification when a song is played in any music player. 
 
