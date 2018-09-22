@@ -31,6 +31,11 @@ public class MyService extends Service {
 
         iF.addAction("com.android.music.queuechanged");
 
+        iF.addAction("com.bsbportal.music.playstatechanged");
+        iF.addAction("com.bsbportal.music.playbackcomplete");
+        iF.addAction("com.bsbportal.music.metachanged");
+        iF.addAction("com.bsbportal.music.queuechanged");
+
         //HTC Music
         iF.addAction("com.htc.music.playstatechanged");
         iF.addAction("com.htc.music.playbackcomplete");

@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -37,6 +38,7 @@ public class MusicReceiver extends BroadcastReceiver {
 
     StringBuilder artistName;
     StringBuilder trackName;
+    NotificationManager notifManager;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -226,7 +228,6 @@ public class MusicReceiver extends BroadcastReceiver {
             ((NotificationManager) (c.getSystemService(NOTIFICATION_SERVICE))).notify(1, notification);
         }
     }
-
 
 }
 // https://api.musixmatch.com/ws/1.1/track.lyrics.get?apikey=0e3945b8ba5f77f377843ec4b2539360&track_id=113673904
